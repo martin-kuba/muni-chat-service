@@ -44,7 +44,7 @@ java -jar target/pa160_chat_service.jar \
 1. the badge becomes green again, if not, press CTRL+SHIFT+R to reload its image
 ## Continuous delivery
 1. see the content of the file [.github/workflows/release_assets.yml](.github/workflows/release_assets.yml) that controls the CD workflow
-1. visit the **[[Releases]](../../releases)** page and click on **Draft a new release**
+1. visit the **[Releases](../../releases)** page and click on **Draft a new release**
 1. Type a tag name into the *Tag version* form field and a title into *Release title*
 1. click **Publish release**
 1. visit the **[Actions](../../actions)** page to see how the workflow is executed

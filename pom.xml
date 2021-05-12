@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.4</version>
+		<version>2.4.5</version>
 	</parent>
 	<groupId>cz.muni</groupId>
 	<artifactId>pa160_chat_service</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.7</version>
 	<name>pa160_chat_service</name>
 	<description>Example web service with OpenAPI description for the course PA160 at Masaryk University</description>
 
