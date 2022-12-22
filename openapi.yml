@@ -1,0 +1,201 @@
+openapi: 3.0.1
+info:
+  title: Example Chat Service
+  description: Simple Spring Boot service for chatting
+  contact:
+    name: Martin Kuba
+    url: https://www.muni.cz/lide/3988-martin-kuba
+    email: makub@ics.muni.cz
+  version: "1.0"
+servers:
+  - url: "{scheme}://{server}:{port}"
+    description: my server
+    variables:
+      scheme:
+        default: http
+        enum:
+          - http
+          - https
+      server:
+        default: localhost
+      port:
+        default: "8080"
+tags:
+  - name: Chat
+    description: microservice for chat
+paths:
+  /api/messages:
+    get:
+      tags:
+        - Chat
+      summary: Get all messages
+      description: |
+        Returns an array of objects representing chat messages, ordered from the oldest to the newest.
+        Each message must have a **text** and **timestamp**, and optionally may have an **author**,
+        a **text color** and a **background color**.
+        It is possible to use [MarkDown](https://www.markdownguide.org/) in descriptions.
+      operationId: getAllMessages
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatMessage'
+    post:
+      tags:
+        - Chat
+      summary: Create a new message
+      description: |
+        Receives data both in request body and as URL parameter and stores them as a new message.
+        Returns the new message as response.
+      operationId: createMessage
+      parameters:
+        - name: author
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: User-agent
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewChatMessageRequest'
+        required: true
+      responses:
+        "201":
+          description: returns created message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        "400":
+          description: input data were not correct
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/message/{id}:
+    get:
+      tags:
+        - Chat
+      summary: Returns identified message
+      description: Looks up a message by its id.
+      operationId: getMessage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: returns a single message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        "404":
+          description: message not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    ErrorMessage:
+      title: error message
+      type: object
+      properties:
+        timestamp:
+          type: string
+          description: time in ISO format
+          format: date-time
+          example: 2022-12-21T18:52:10.757Z
+        status:
+          type: integer
+          description: HTTP status code
+          format: int32
+          example: 404
+        error:
+          type: string
+          description: HTTP status text
+          example: Not Found
+        message:
+          type: string
+          description: reason for error
+          example: entity not found
+        path:
+          type: string
+          description: URL path
+          example: /api/message/1
+      description: response body for HTML statuses
+    BackgroundColorEnum:
+      title: background color
+      type: string
+      description: enumeration of allowed background colors
+      enum:
+        - lightgray
+        - white
+        - aquamarine
+        - lightyellow
+        - lightblue
+        - '#ffe4c4'
+    NewChatMessageRequest:
+      required:
+        - text
+      type: object
+      properties:
+        text:
+          type: string
+          description: text of message
+          example: Hello! 😀
+        textColor:
+          type: string
+          description: HTML color name or RGB hex code
+          example: black
+        backgroundColor:
+          $ref: '#/components/schemas/BackgroundColorEnum'
+      description: |
+        Object for requesting new message.
+        **Text** of the message must be located in the request body because URLs are limited in size.
+        See [What is the maximum length of a URL in different browsers?](https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
+    ChatMessage:
+      title: chat message
+      required:
+        - id
+        - text
+        - timestamp
+      type: object
+      properties:
+        id:
+          type: string
+          description: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        timestamp:
+          type: string
+          description: time of creation
+          format: date-time
+          example: 2022-12-22T12:04:04.493908908+01:00
+        text:
+          type: string
+          description: text of message
+          example: Hello! 😀
+        author:
+          type: string
+          description: author of message
+          example: John
+        textColor:
+          type: string
+          description: HTML color name or RGB hex code
+          example: black
+        backgroundColor:
+          $ref: '#/components/schemas/BackgroundColorEnum'
+      description: represents a message in a chat

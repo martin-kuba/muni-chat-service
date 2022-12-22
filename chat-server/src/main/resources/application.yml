@@ -1,0 +1,20 @@
+# see https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+server:
+  error:
+    include-message: always
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+logging:
+  level:
+    root: warn
+    cz:
+      muni: debug
+    org:
+      springframework:
+        web: info
+spring:
+  mvc:
+    log-request-details: true

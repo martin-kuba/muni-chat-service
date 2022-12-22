@@ -2,46 +2,32 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>cz.muni.chat</groupId>
+	<artifactId>chat-service-parent</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>Chat service parent project</name>
+	<description>Example web service with OpenAPI description</description>
+	<organization>
+		<name>Masaryk University</name>
+		<url>https://www.muni.cz/</url>
+	</organization>
+	<inceptionYear>2022</inceptionYear>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.5</version>
+		<version>3.0.0</version>
 	</parent>
-	<groupId>cz.muni</groupId>
-	<artifactId>pa160_chat_service</artifactId>
-	<version>1.0.7</version>
-	<name>pa160_chat_service</name>
-	<description>Example web service with OpenAPI description for the course PA160 at Masaryk University</description>
 
-	<properties>
-		<java.version>11</java.version>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-text</artifactId>
-			<version>1.9</version>
-		</dependency>
-	</dependencies>
+	<modules>
+		<module>chat-server</module>
+		<module>chat-client-java</module>
+	</modules>
 
 	<build>
-		<finalName>pa160_chat_service</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
+		<defaultGoal>install</defaultGoal>
 	</build>
+
 </project>

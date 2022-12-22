@@ -1,0 +1,48 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example Chat Web Service</title>
+</head>
+<body>
+<h1>Example Chat Web Service</h1>
+<p>This is an example of a web (micro)service with machine-processable OpenAPI description.</p>
+
+<h2>Interface</h2>
+
+<p>Visit <a target="_blank" href="/chat">/chat</a> with your browser to see all messages on an HTML page.</p>
+
+<p>Visit <a target="_blank" href="/api/messages">/api/messages</a> with your browser to get all messages in JSON format.
+The same data can be obtained from command line:</p>
+<pre style="background-color: beige">
+curl 'http://localhost:8080/api/messages'
+</pre>
+
+<p>Post a new message using command line:</p>
+<pre style="background-color: beige">
+curl -X 'POST' \
+  'http://localhost:8080/api/messages?author=Joe' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "text": "Hello! 😀",
+  "textColor": "black",
+  "backgroundColor": "lightgray"
+}'
+</pre>
+
+<h2>OpenAPI Description</h2>
+<p>
+    Automatically generated OpenAPI description is available in two formats:</p>
+<ul>
+    <li>in JSON at <a target="_blank" href="/api-docs">/api-docs</a></li>
+    <li>in YAML at <a target="_blank" href="/api-docs.yaml">/api-docs.yaml</a></li>
+</ul>
+<p><a target="_blank" href="/swagger-ui.html">Open the OpenAPI description in Swagger UI</a> and try to call the service.</p>
+
+<h2>Implementation</h2>
+<p>
+    This web service is implemented in Java using the Spring Boot framework.
+</p>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package cz.muni.pa160;
+package cz.muni.chat.server;
 
 import org.apache.coyote.ajp.AjpNioProtocol;
 import org.slf4j.Logger;
@@ -55,8 +55,7 @@ public class TomcatConfig {
             tomcat.setPort(port);
             tomcat.getTomcatProtocolHandlerCustomizers().add(protocolHandler -> {
                 log.info("TomcatProtocolHandlerCustomizer protocolHandler={}", protocolHandler);
-                if (protocolHandler instanceof AjpNioProtocol) {
-                    AjpNioProtocol ajp = (AjpNioProtocol) protocolHandler;
+                if (protocolHandler instanceof AjpNioProtocol ajp) {
                     ajp.setSecretRequired(secretRequired);
                     ajp.setSecret(secret);
                     ajp.setTomcatAuthentication(tomcatAuthentication);
