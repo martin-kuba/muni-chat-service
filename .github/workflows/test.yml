@@ -15,6 +15,7 @@ jobs:
       - name: "set up JDK ${{ matrix.java }}"
         uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: ${{ matrix.java }}
 
       - name: "restore cached maven repository"
