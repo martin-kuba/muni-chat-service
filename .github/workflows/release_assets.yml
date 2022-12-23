@@ -7,15 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "check out code"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: "set up JDK"
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
+          distribution: 'zulu'
           java-version: 17
 
       - name: "restore cached maven repository"
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -32,6 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/pa160_chat_service.jar
-          asset_name: pa160_chat_service.jar
+          asset_path: ./chat-server/target/chat_service.jar
+          asset_name: chat_service.jar
           asset_content_type: application/java-archive
