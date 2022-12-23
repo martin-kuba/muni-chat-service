@@ -4,21 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- OpenAPI Generator generates code for older Spring -->
+    <!-- definition of parent Maven project -->
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.6</version>
-        <relativePath/>
+        <groupId>cz.muni.chat</groupId>
+        <artifactId>chat-service-parent</artifactId>
+        <version>1.0.0</version>
     </parent>
 
     <!-- this module definition -->
-    <groupId>cz.muni.chat</groupId>
     <artifactId>chat-client-java</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Chat client in Java</name>
-    <description>Client for microservice generated using OpenAPI Generator</description>
+    <name>Executable chat client in Java</name>
+    <description>Command-line client for Chat service</description>
+
+    <properties>
+        <start-class>cz.muni.chat.client.Main</start-class>
+    </properties>
 
     <build>
         <!-- run with:
@@ -27,41 +29,9 @@
             mvn spring-boot:run
         -->
         <finalName>chat-client</finalName>
-        <defaultGoal>package</defaultGoal>
+        <defaultGoal>spring-boot:run</defaultGoal>
 
         <plugins>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>6.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <!-- see https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-maven-plugin/README.md -->
-                            <inputSpec>${project.basedir}/../openapi.yml</inputSpec>
-                            <generatorName>java</generatorName>
-                            <apiPackage>cz.muni.chat.client</apiPackage>
-                            <modelPackage>cz.muni.chat.client.model</modelPackage>
-                            <invokerPackage>cz.muni.chat.client.invoker</invokerPackage>
-                            <verbose>false</verbose>
-                            <generateApiTests>false</generateApiTests>
-                            <generateModelTests>false</generateModelTests>
-                            <generateApiDocumentation>true</generateApiDocumentation>
-                            <generateModelDocumentation>true</generateModelDocumentation>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <library>resttemplate</library>
-                                <java8>true</java8>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-
             <!-- Package JAR with Main class and all libraries -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -73,67 +43,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-annotations-version}</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>chat-client-java-lib</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
-        <!-- @Nullable annotation -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
-            <version>${jackson-databind-nullable-version}</version>
-        </dependency>
-
-        <!-- HTTP client: Spring RestTemplate -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-
-        <!-- JSON processing: jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.jaxrs</groupId>
-            <artifactId>jackson-jaxrs-json-provider</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
-    <properties>
-        <start-class>cz.muni.chat.client.Main</start-class>
-        <java.version>17</java.version>
-        <!-- generated by OpenAPI Generator -->
-        <swagger-annotations-version>1.5.22</swagger-annotations-version>
-        <jackson-databind-nullable-version>0.2.4</jackson-databind-nullable-version>
-        <maven-plugin-version>1.0.0</maven-plugin-version>
-    </properties>
+
 </project>
