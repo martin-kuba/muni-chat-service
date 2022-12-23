@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.links.Link;
+import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,7 +47,8 @@ import java.util.List;
         info = @Info(title = "Example Chat Service",
                 version = "1.0",
                 description = "Simple Spring Boot service for chatting",
-                contact = @Contact(name = "Martin Kuba", email = "makub@ics.muni.cz", url = "https://www.muni.cz/lide/3988-martin-kuba")
+                contact = @Contact(name = "Martin Kuba", email = "makub@ics.muni.cz", url = "https://www.muni.cz/lide/3988-martin-kuba"),
+                license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0.html")
         ),
         servers = @Server(description = "my server", url = "{scheme}://{server}:{port}", variables = {
                 @ServerVariable(name = "scheme", allowableValues = {"http", "https"}, defaultValue = "http"),
@@ -65,6 +69,8 @@ public class ChatRestController {
         this.chatService = chatService;
     }
 
+
+
     /**
      * REST method returning all messages.
      */
@@ -82,6 +88,8 @@ public class ChatRestController {
         log.info("GET /messages called from {}", req.getRemoteHost());
         return chatService.getAllChatMessages().stream().map(ChatMessage::fromStoredMessage).toList();
     }
+
+
 
     /**
      * REST method returning message with specified id.
@@ -103,6 +111,8 @@ public class ChatRestController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "message with id=" + id + " not found");
     }
 
+
+
     /**
      * REST method for creating a new message.
      */
@@ -113,9 +123,20 @@ public class ChatRestController {
                     Returns the new message as its response.
                     """,
             responses = {
-                    @ApiResponse(responseCode = "201", description = "returns created message"),
+                    @ApiResponse(responseCode = "201", description = "returns created message",
+                            links = @Link(
+                                    name = "GetMessageById",
+                                    operationId = "getMessage",
+                                    parameters = @LinkParameter(name = "id", expression = "$response.body#/id"),
+                                    description = """
+                                            The `id` value returned in the response can be used as
+                                            the `id` parameter in `GET /message/{id}`.
+                                            """
+                            )
+                    ),
                     @ApiResponse(responseCode = "400", description = "input data were not correct",
-                            content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+                            content = @Content(schema = @Schema(implementation = ErrorMessage.class))
+                    ),
             }
     )
     @PostMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)

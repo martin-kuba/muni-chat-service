@@ -6,6 +6,9 @@ info:
     name: Martin Kuba
     url: https://www.muni.cz/lide/3988-martin-kuba
     email: makub@ics.muni.cz
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: "1.0"
 servers:
   - url: "{scheme}://{server}:{port}"
@@ -50,7 +53,7 @@ paths:
       summary: Create a new message
       description: |
         Receives data both in request body and as URL parameter and stores them as a new message.
-        Returns the new message as response.
+        Returns the new message as its response.
       operationId: createMessage
       parameters:
         - name: author
@@ -76,6 +79,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatMessage'
+          links:
+            GetMessageById:
+              operationId: getMessage
+              parameters:
+                id: $response.body#/id
+              description: |
+                The `id` value returned in the response can be used as
+                the `id` parameter in `GET /message/{id}`.
         "400":
           description: input data were not correct
           content:
