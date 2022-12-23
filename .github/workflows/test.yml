@@ -17,14 +17,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: ${{ matrix.java }}
-
-      - name: "restore cached maven repository"
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-jdk${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-jdk${{ matrix.java }}-
+          cache: 'maven'
 
       - name: "build and test with Maven"
         run: mvn -B clean test
