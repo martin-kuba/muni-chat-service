@@ -21,7 +21,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -93,7 +97,6 @@ public class ChatRestController {
     }
 
 
-
     /**
      * REST method returning message with specified id.
      */
@@ -113,7 +116,6 @@ public class ChatRestController {
         if (m != null) return ChatMessage.fromStoredMessage(m);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "message with id=" + id + " not found");
     }
-
 
 
     /**
@@ -157,6 +159,29 @@ public class ChatRestController {
         BackgroundColor bc = (r.getBackgroundColor() == null) ? BackgroundColor.LIGHTGRAY : r.getBackgroundColor();
         StoredMessage message = chatService.createNewChatMessage(author, r.getText(), r.getTextColor(), bc.getValue());
         return ChatMessage.fromStoredMessage(message);
+    }
+
+    /**
+     * REST method returning messages in pages.
+     */
+    @Operation(
+            summary = "Paged messages",
+            description = """
+                    Returns a page of chat messages.
+                    The parameter `page` specifies zero-based index of the requested page,
+                    and the parameter `size` specifies the size of the page.
+                    """)
+    @GetMapping(path = "/paged", produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "*")
+    public Page<ChatMessage> paged(@ParameterObject Pageable pageable) {
+        log.debug("/paged: pageable = {} offset = {}", pageable, pageable.getOffset());
+        List<StoredMessage> msgs = chatService.getAllChatMessages();
+        long total = msgs.size();
+        List<ChatMessage> chatMessages = msgs.stream()
+                .skip(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .map(ChatMessage::fromStoredMessage).toList();
+        return new PageImpl<>(chatMessages, pageable, total);
     }
 
 }

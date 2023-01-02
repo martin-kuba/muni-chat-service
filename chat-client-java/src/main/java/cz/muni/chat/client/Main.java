@@ -5,6 +5,7 @@ import cz.muni.chat.client.invoker.ApiException;
 import cz.muni.chat.client.model.BackgroundColorEnum;
 import cz.muni.chat.client.model.ChatMessage;
 import cz.muni.chat.client.model.NewChatMessageRequest;
+import cz.muni.chat.client.model.PageChatMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -50,6 +51,17 @@ public class Main implements CommandLineRunner {
         log.info("new message = {}", message);
         ZonedDateTime timestamp = message.getTimestamp().atZoneSameInstant(ZoneId.systemDefault());
         log.info("timestamp: {}", timestamp);
+
+        // create more messages
+        for (int i = 3; i <= 8; i++) {
+            chat.createMessage(new NewChatMessageRequest().text("Message num " + i), "robot", null);
+        }
+        //get paged messages
+        PageChatMessage paged = chat.paged(1, 3, null);
+        log.info("paged messages:");
+        for (ChatMessage chatMessage : paged.getContent()) {
+            log.info("msg: {}", chatMessage);
+        }
 
         // deliberately make a wrong call to show catching an exception
         try {
