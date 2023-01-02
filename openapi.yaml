@@ -11,26 +11,26 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: "1.0"
 servers:
-  - url: "{scheme}://{server}:{port}"
-    description: my server
-    variables:
-      scheme:
-        default: http
-        enum:
-          - http
-          - https
-      server:
-        default: localhost
-      port:
-        default: "8080"
+- url: "{scheme}://{server}:{port}"
+  description: my server
+  variables:
+    scheme:
+      default: http
+      enum:
+      - http
+      - https
+    server:
+      default: localhost
+    port:
+      default: "8080"
 tags:
-  - name: Chat
-    description: microservice for chat
+- name: Chat
+  description: microservice for chat
 paths:
   /api/messages:
     get:
       tags:
-        - Chat
+      - Chat
       summary: Get all messages
       description: |
         Returns an array of objects representing chat messages, ordered from the oldest to the newest.
@@ -49,23 +49,23 @@ paths:
                   $ref: '#/components/schemas/ChatMessage'
     post:
       tags:
-        - Chat
+      - Chat
       summary: Create a new message
       description: |
         Receives data both in request body and as URL parameter and stores them as a new message.
         Returns the new message as its response.
       operationId: createMessage
       parameters:
-        - name: author
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: User-agent
-          in: header
-          required: false
-          schema:
-            type: string
+      - name: author
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: User-agent
+        in: header
+        required: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -96,16 +96,16 @@ paths:
   /api/message/{id}:
     get:
       tags:
-        - Chat
+      - Chat
       summary: Returns identified message
       description: Looks up a message by its id.
       operationId: getMessage
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           description: returns a single message
@@ -153,15 +153,15 @@ components:
       type: string
       description: enumeration of allowed background colors
       enum:
-        - lightgray
-        - white
-        - aquamarine
-        - lightyellow
-        - lightblue
-        - '#ffe4c4'
+      - lightgray
+      - white
+      - aquamarine
+      - lightyellow
+      - lightblue
+      - '#ffe4c4'
     NewChatMessageRequest:
       required:
-        - text
+      - text
       type: object
       properties:
         text:
@@ -181,9 +181,9 @@ components:
     ChatMessage:
       title: chat message
       required:
-        - id
-        - text
-        - timestamp
+      - id
+      - text
+      - timestamp
       type: object
       properties:
         id:

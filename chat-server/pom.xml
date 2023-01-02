@@ -60,9 +60,50 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--
+                  starts and stops the built application during integration test so that
+                  springdoc-openapi-maven-plugin can download generated openapi.yaml from it
+                -->
+                <executions>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!--
+                  create JAR executable on Linux, see
+                  https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.installing
+                -->
                 <configuration>
-                    <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.installing -->
                     <executable>true</executable>
+                </configuration>
+            </plugin>
+
+            <!-- SpringDoc OpenAPI plugin for downloading generated openapi.yaml during integration test phase -->
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <apiDocsUrl>http://localhost:8080/openapi.yaml</apiDocsUrl>
+                    <outputFileName>openapi.yaml</outputFileName>
+                    <outputDir>..</outputDir>
                 </configuration>
             </plugin>
         </plugins>
