@@ -68,7 +68,6 @@ public class ChatRestController {
     }
 
 
-
     /**
      * REST method returning all messages.
      */

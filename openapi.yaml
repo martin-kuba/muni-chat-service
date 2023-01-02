@@ -156,6 +156,10 @@ components:
           type: string
           description: HTML color name or RGB hex code
           example: black
+          enum:
+          - black
+          - blue
+          - darkgrey
         backgroundColor:
           $ref: '#/components/schemas/BackgroundColorEnum'
       description: |

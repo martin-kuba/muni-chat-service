@@ -9,6 +9,8 @@ import cz.muni.chat.client.model.NewChatMessageRequest;
 import java.time.ZoneId;
 import java.util.Random;
 
+import static cz.muni.chat.client.model.NewChatMessageRequest.TextColorEnum;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -27,7 +29,7 @@ public class Main {
         ChatMessage message = chat.createMessage(
                 new NewChatMessageRequest()
                         .text("Hello!")
-                        .textColor("black")
+                        .textColor(TextColorEnum.BLACK)
                         .backgroundColor(bg),
                 "me",
                 "UltraChat 1.0");

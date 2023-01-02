@@ -18,7 +18,10 @@ public class NewChatMessageRequest {
     @Schema(description = "text of message", example = "Hello! \uD83D\uDE00")
     private String text;
 
-    @Schema(description = "HTML color name or RGB hex code", example = "black")
+    @Schema(description = "HTML color name or RGB hex code",
+            example = "black",
+            allowableValues = {"black", "blue", "darkgrey"}
+    )
     private String textColor = "black";
 
     private BackgroundColor backgroundColor;
