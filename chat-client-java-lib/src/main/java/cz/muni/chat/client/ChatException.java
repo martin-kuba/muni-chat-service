@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 /**
  * Exception created from ErrorMessage sent from ChatService for non-200 HTTP status codes.
  */
-public class ChatException extends Exception {
+public class ChatException extends RuntimeException {
 
     public ChatException(String message, Throwable cause) {
         super(message, cause);
@@ -25,7 +25,7 @@ public class ChatException extends Exception {
 
     private String path;
 
-    private static ObjectMapper objectMapper =
+    private static final ObjectMapper objectMapper =
             new ObjectMapper()
                     .findAndRegisterModules()
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

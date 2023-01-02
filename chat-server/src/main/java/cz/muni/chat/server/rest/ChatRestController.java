@@ -1,5 +1,9 @@
-package cz.muni.chat.server.facade;
+package cz.muni.chat.server.rest;
 
+import cz.muni.chat.server.facade.BackgroundColor;
+import cz.muni.chat.server.facade.ChatMessage;
+import cz.muni.chat.server.facade.ErrorMessage;
+import cz.muni.chat.server.facade.NewChatMessageRequest;
 import cz.muni.chat.server.service.ChatService;
 import cz.muni.chat.server.service.StoredMessage;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -17,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
@@ -63,6 +68,7 @@ public class ChatRestController {
 
     private final ChatService chatService;
 
+    @Autowired
     public ChatRestController(ChatService chatService) {
         this.chatService = chatService;
     }
@@ -79,7 +85,7 @@ public class ChatRestController {
                     a **text color** and a **background color**.
                     It is possible to use [MarkDown](https://www.markdownguide.org/) in descriptions.
                     """)
-    @GetMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
     public List<ChatMessage> getAllMessages(HttpServletRequest req) {
         log.info("GET /messages called from {}", req.getRemoteHost());
@@ -100,7 +106,7 @@ public class ChatRestController {
                             content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @GetMapping(value = "/message/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/message/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
     public ChatMessage getMessage(@PathVariable String id) {
         StoredMessage m = chatService.getMessage(id);
@@ -126,7 +132,7 @@ public class ChatRestController {
                     ),
             }
     )
-    @PostMapping(value = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
     @ResponseStatus(HttpStatus.CREATED)
     public ChatMessage createMessage(@Valid @RequestBody NewChatMessageRequest r,

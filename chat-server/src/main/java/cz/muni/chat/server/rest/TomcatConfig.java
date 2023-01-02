@@ -1,4 +1,4 @@
-package cz.muni.chat.server;
+package cz.muni.chat.server.rest;
 
 import org.apache.coyote.ajp.AjpNioProtocol;
 import org.slf4j.Logger;

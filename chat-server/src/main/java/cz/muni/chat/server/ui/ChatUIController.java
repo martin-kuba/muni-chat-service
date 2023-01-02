@@ -3,10 +3,10 @@ package cz.muni.chat.server.ui;
 import cz.muni.chat.server.service.ChatService;
 import cz.muni.chat.server.service.StoredMessage;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,11 +20,12 @@ public class ChatUIController {
 
     private final ChatService chatService;
 
+    @Autowired
     public ChatUIController(ChatService chatService) {
         this.chatService = chatService;
     }
 
-    @RequestMapping(value = "/chat", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(path = "/chat", produces = MediaType.TEXT_HTML_VALUE)
     public void chat(HttpServletResponse res) throws IOException {
         // we are generating HTML page
         res.setContentType("text/html; charset=utf-8");
