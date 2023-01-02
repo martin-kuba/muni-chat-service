@@ -7,8 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.annotations.links.Link;
-import io.swagger.v3.oas.annotations.links.LinkParameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -98,7 +96,7 @@ public class ChatRestController {
             summary = "Returns identified message",
             description = "Looks up a message by its id.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "returns a single message"),
+                    @ApiResponse(responseCode = "200", ref = "#/components/responses/SingleMessageResponse"),
                     @ApiResponse(responseCode = "404", description = "message not found",
                             content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
             }
@@ -123,17 +121,7 @@ public class ChatRestController {
                     Returns the new message as its response.
                     """,
             responses = {
-                    @ApiResponse(responseCode = "201", description = "returns created message",
-                            links = @Link(
-                                    name = "GetMessageById",
-                                    operationId = "getMessage",
-                                    parameters = @LinkParameter(name = "id", expression = "$response.body#/id"),
-                                    description = """
-                                            The `id` value returned in the response can be used as
-                                            the `id` parameter in `GET /message/{id}`.
-                                            """
-                            )
-                    ),
+                    @ApiResponse(responseCode = "201", ref = "#/components/responses/SingleMessageResponse"),
                     @ApiResponse(responseCode = "400", description = "input data were not correct",
                             content = @Content(schema = @Schema(implementation = ErrorMessage.class))
                     ),

@@ -74,19 +74,7 @@ paths:
         required: true
       responses:
         "201":
-          description: returns created message
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatMessage'
-          links:
-            GetMessageById:
-              operationId: getMessage
-              parameters:
-                id: $response.body#/id
-              description: |
-                The `id` value returned in the response can be used as
-                the `id` parameter in `GET /message/{id}`.
+          $ref: '#/components/responses/SingleMessageResponse'
         "400":
           description: input data were not correct
           content:
@@ -108,11 +96,7 @@ paths:
           type: string
       responses:
         "200":
-          description: returns a single message
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChatMessage'
+          $ref: '#/components/responses/SingleMessageResponse'
         "404":
           description: message not found
           content:
@@ -210,3 +194,18 @@ components:
         backgroundColor:
           $ref: '#/components/schemas/BackgroundColorEnum'
       description: represents a message in a chat
+  responses:
+    SingleMessageResponse:
+      description: response containing a single message
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChatMessage'
+      links:
+        link_to_getMessage:
+          operationId: getMessage
+          parameters:
+            id: $response.body#/id
+          description: |
+            The `id` value returned in the response can be used as
+            the `id` parameter in `GET /message/{id}`.
