@@ -18,10 +18,6 @@
     <name>Executable chat client in Java</name>
     <description>Command-line client for Chat service</description>
 
-    <properties>
-        <start-class>cz.muni.chat.client.Main</start-class>
-    </properties>
-
     <build>
         <!-- run with:
             mvn package; java -jar target/chat-client.jar
@@ -32,11 +28,9 @@
         <defaultGoal>spring-boot:run</defaultGoal>
 
         <plugins>
-            <!-- Package JAR with Main class and all libraries -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <!-- Main-Class taken from property ${start-class} -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -47,6 +41,17 @@
             <artifactId>chat-client-java-lib</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
