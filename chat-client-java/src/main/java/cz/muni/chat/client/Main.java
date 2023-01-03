@@ -57,8 +57,14 @@ public class Main implements CommandLineRunner {
             chat.createMessage(new NewChatMessageRequest().text("Message num " + i), "robot", null);
         }
         //get paged messages
-        PageChatMessage paged = chat.paged(1, 3, null);
-        log.info("paged messages:");
+        int pageIndex = 2;
+        int pageSize = 3;
+        PageChatMessage paged = chat.paged(pageIndex, pageSize, null);
+        log.info("paged messages: page={}/{} offset={} items={}/{} total={}",
+                paged.getNumber() + 1, paged.getTotalPages(),
+                paged.getPageable().getOffset(),
+                paged.getNumberOfElements(), paged.getSize(),
+                paged.getTotalElements());
         for (ChatMessage chatMessage : paged.getContent()) {
             log.info("msg: {}", chatMessage);
         }

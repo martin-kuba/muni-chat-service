@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -174,14 +173,7 @@ public class ChatRestController {
     @GetMapping(path = "/paged", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
     public Page<ChatMessage> paged(@ParameterObject Pageable pageable) {
-        log.debug("/paged: pageable = {} offset = {}", pageable, pageable.getOffset());
-        List<StoredMessage> msgs = chatService.getAllChatMessages();
-        long total = msgs.size();
-        List<ChatMessage> chatMessages = msgs.stream()
-                .skip(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .map(ChatMessage::fromStoredMessage).toList();
-        return new PageImpl<>(chatMessages, pageable, total);
+        return chatService.getPageOfMessages(pageable).map(ChatMessage::fromStoredMessage);
     }
 
 }
