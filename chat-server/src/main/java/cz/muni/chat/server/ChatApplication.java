@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *
  * @author Martin Kuba makub@ics.muni.cz
  */
-@SpringBootApplication // this annotation marks this class as runnable Spring Boot app
+@SpringBootApplication // this annotation marks this class as a runnable Spring Boot app
 public class ChatApplication {
 
     public static void main(String[] args) {

@@ -28,6 +28,7 @@ public class ApiConfig {
      * Adds shared definition to #/components/responses
      * that cannot be added using annotations.
      */
+    @SuppressWarnings("Convert2Lambda")
     @Bean
     public OpenApiCustomizer openAPICustomizer() {
         return new OpenApiCustomizer() {

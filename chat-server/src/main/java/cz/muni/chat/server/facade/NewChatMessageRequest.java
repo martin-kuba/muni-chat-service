@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotBlank;
         See [What is the maximum length of a URL in different browsers?](https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
         """
 )
+@SuppressWarnings("unused")
 public class NewChatMessageRequest {
 
     @NotBlank

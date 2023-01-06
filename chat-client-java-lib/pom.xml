@@ -8,12 +8,11 @@
     <parent>
         <groupId>cz.muni.chat</groupId>
         <artifactId>chat-service-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </parent>
 
     <!-- this module definition -->
     <artifactId>chat-client-java-lib</artifactId>
-    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Chat client library in Java</name>
     <description>Client library generated using OpenAPI Generator</description>

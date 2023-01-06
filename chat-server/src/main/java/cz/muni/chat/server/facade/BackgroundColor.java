@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 /**
  * Enum for background color.
+ * String values are different from enum identifiers, i.e. "#ffe4c4" for BISQUE.
  */
 @Schema(
         name = "BackgroundColorEnum",

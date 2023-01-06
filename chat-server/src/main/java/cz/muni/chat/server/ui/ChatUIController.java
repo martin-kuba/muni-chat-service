@@ -15,6 +15,9 @@ import java.util.List;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
+/**
+ * Simple Spring MVC Controller generating HTML page on URL /chat displaying all chat messages.
+ */
 @Controller
 public class ChatUIController {
 
