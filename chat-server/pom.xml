@@ -54,6 +54,17 @@
             <artifactId>spring-data-commons</artifactId>
         </dependency>
 
+        <!--
+          testing
+          see https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing
+          and https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

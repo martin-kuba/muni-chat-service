@@ -35,7 +35,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public StoredMessage createNewChatMessage(String text, String author, String textColor, String backgroundColor) {
         UUID uuid = UUID.randomUUID();
-        StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), author, text, textColor, backgroundColor);
+        StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author, textColor, backgroundColor);
         messages.add(c);
         return c;
     }

@@ -1,4 +1,4 @@
-name: "upload release assets"
+name: "create release with assets"
 on:
   push:
     # Run for tagged commits, the tag name should be X.Y.Z to be used as version in pom.xml
@@ -6,7 +6,7 @@ on:
       - '[1-9]*'
 jobs:
   publish:
-    name: "create release with assets"
+    name: "release"
     runs-on: ubuntu-latest
     permissions:
       contents: write

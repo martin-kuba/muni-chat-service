@@ -170,7 +170,7 @@ public class ChatRestController {
             author = httpServletRequest.getRemoteHost();
         }
         BackgroundColor bc = (r.getBackgroundColor() == null) ? BackgroundColor.LIGHTGRAY : r.getBackgroundColor();
-        StoredMessage message = chatService.createNewChatMessage(author, r.getText(), r.getTextColor(), bc.getValue());
+        StoredMessage message = chatService.createNewChatMessage(r.getText(), author, r.getTextColor(), bc.getValue());
         return ChatMessage.fromStoredMessage(message);
     }
 
