@@ -105,7 +105,7 @@ public class ChatRestController {
     @GetMapping(path = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
     public List<ChatMessage> getAllMessages(HttpServletRequest req) {
-        log.info("GET /messages called from {}", req.getRemoteHost());
+        log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
         return chatService.getAllChatMessages().stream().map(ChatMessage::fromStoredMessage).toList();
     }
 
@@ -124,7 +124,8 @@ public class ChatRestController {
     )
     @GetMapping(path = "/message/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
-    public ChatMessage getMessage(@PathVariable String id) {
+    public ChatMessage getMessage(@PathVariable String id, HttpServletRequest req) {
+        log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
         StoredMessage m = chatService.getMessage(id);
         if (m != null) return ChatMessage.fromStoredMessage(m);
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "message with id=" + id + " not found");
@@ -153,21 +154,21 @@ public class ChatRestController {
     public ChatMessage createMessage(@Valid @RequestBody NewChatMessageRequest r,
                                      BindingResult bindingResult,
                                      @RequestParam(required = false) String author,
-                                     HttpServletRequest httpServletRequest,
+                                     HttpServletRequest req,
                                      @RequestHeader(value = "User-agent", required = false) String userAgent
     ) {
-        log.info("POST /messages called from {} by {}", httpServletRequest.getRemoteHost(), userAgent);
+        log.info("{} {} called from {} by {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost(), userAgent);
         // check validity of input data
         if (bindingResult.hasErrors()) {
-            log.warn("binding errors found");
+            log.debug("binding errors found");
             for (FieldError fe : bindingResult.getFieldErrors()) {
-                log.warn("FieldError: {} - {}", fe.getField(), fe.getDefaultMessage());
+                log.debug("FieldError: {} - {}", fe.getField(), fe.getDefaultMessage());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, fe.getField() + " - " + fe.getDefaultMessage());
             }
         }
         // default values
         if (author == null) {
-            author = httpServletRequest.getRemoteHost();
+            author = req.getRemoteHost();
         }
         BackgroundColor bc = (r.getBackgroundColor() == null) ? BackgroundColor.LIGHTGRAY : r.getBackgroundColor();
         StoredMessage message = chatService.createNewChatMessage(r.getText(), author, r.getTextColor(), bc.getValue());
@@ -186,7 +187,8 @@ public class ChatRestController {
                     """)
     @GetMapping(path = "/paged", produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin(origins = "*")
-    public Page<ChatMessage> paged(@ParameterObject Pageable pageable) {
+    public Page<ChatMessage> paged(@ParameterObject Pageable pageable, HttpServletRequest req) {
+        log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
         return chatService.getPageOfMessages(pageable).map(ChatMessage::fromStoredMessage);
     }
 

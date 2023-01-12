@@ -135,6 +135,23 @@ class ChatRestControllerTest {
     }
 
     @Test
+    void createMessageWithoutText() throws Exception {
+        log.debug("createMessageWithoutText");
+        // define what mock service returns when called
+        // call controller and check the result
+        NewChatMessageRequest n = new NewChatMessageRequest();
+        n.setText(null);
+        n.setTextColor("black");
+        mockMvc.perform(post("/api/messages")
+                        .header("User-Agent","007")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(n))
+                )
+                .andExpect(status().isBadRequest())
+                //.andDo(print())
+        ;
+    }
+    @Test
     void paged() throws Exception {
         log.debug("paged");
         // define what mock service returns when called
