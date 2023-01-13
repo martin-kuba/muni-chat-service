@@ -2,11 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- parent project -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.0.1</version>
+    </parent>
+
+    <!-- this project -->
     <groupId>cz.muni.chat</groupId>
     <artifactId>chat-service-parent</artifactId>
     <version>0.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>Chat service parent project</name>
     <description>Example web service with OpenAPI description</description>
     <organization>
@@ -14,24 +22,34 @@
         <url>https://www.muni.cz/</url>
     </organization>
     <inceptionYear>2022</inceptionYear>
+    <developers>
+        <developer>
+            <name>Martin Kuba</name>
+            <email>makub@ics.muni.cz</email>
+            <url>http://www.muni.cz/people/3988</url>
+            <organization>Masaryk University</organization>
+            <organizationUrl>https://www.muni.cz</organizationUrl>
+        </developer>
+    </developers>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.1</version>
-    </parent>
-
+    <!-- modules aggregation (commands are done in them too)  -->
     <modules>
         <module>chat-server</module>
         <module>chat-client-java-lib</module>
         <module>chat-client-java</module>
     </modules>
 
+    <!-- properties are inherited into children projects -->
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+
     <build>
+        <!-- set that "mvn" alone means "mvn install" -->
         <defaultGoal>install</defaultGoal>
     </build>
 
-    <!-- set versions of dependencies in one place -->
+    <!-- set versions of dependencies for modules -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -46,4 +64,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 </project>

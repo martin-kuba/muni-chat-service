@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- definition of parent Maven project -->
+    <!-- definition of the parent project, i.e. module inheritance -->
     <parent>
         <groupId>cz.muni.chat</groupId>
         <artifactId>chat-service-parent</artifactId>
@@ -16,10 +16,6 @@
     <packaging>jar</packaging>
     <name>Chat server</name>
     <description>Server for microservice implemented using Spring Boot</description>
-
-    <properties>
-        <java.version>17</java.version>
-    </properties>
 
     <!-- libraries needed in this module -->
     <dependencies>
@@ -48,7 +44,7 @@
             <artifactId>commons-text</artifactId>
         </dependency>
 
-        <!-- simulate pagination from JPA without actually using JPA -->
+        <!-- for pagination from JPA without actually using JPA -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
@@ -77,7 +73,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!--
-                  starts and stops the built application during integration test so that
+                  starts and stops the built application during integration tests so that
                   * springdoc-openapi-maven-plugin can download generated openapi.yaml from it
                   * integration tests can use it
                 -->
@@ -126,6 +122,7 @@
 
             <!-- run integration tests in "mvn verify" phase -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
         </plugins>
