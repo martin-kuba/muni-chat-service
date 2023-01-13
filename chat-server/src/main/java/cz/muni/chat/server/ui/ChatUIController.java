@@ -40,7 +40,7 @@ public class ChatUIController {
         // prevent race condition on concurrent accesses
         List<StoredMessage> chatMessages = chatService.getAllChatMessages();
         // iterate messages in reverse order
-        for (int i = chatMessages.size(); i-- > 0; ) {
+        for (int i = 0 ; i < chatMessages.size(); i++) {
             StoredMessage cm = chatMessages.get(i);
             out.println("<div class=\"message\" style=\"" +
                     "margin: 10px ; padding: 10px " +

@@ -98,7 +98,7 @@ public class ChatRestController {
     @Operation( // metadata for inclusion into OpenAPI document
             summary = "Get all messages",
             description = """
-                    Returns an array of objects representing chat messages, ordered from the oldest to the newest.
+                    Returns an array of objects representing chat messages, ordered from the newest to the oldest.
                     Each message must have a **text** and **timestamp**, and optionally may have an **author**,
                     a **text color** and a **background color**.
                     It is possible to use [MarkDown](https://www.markdownguide.org/) in descriptions.
@@ -187,7 +187,7 @@ public class ChatRestController {
     @Operation(
             summary = "Paged messages",
             description = """
-                    Returns a page of chat messages.
+                    Returns a page of chat messages. Messages are ordered from the newest to the oldest.
                     The parameter `page` specifies zero-based index of the requested page,
                     and the parameter `size` specifies the size of the page.
                     """)

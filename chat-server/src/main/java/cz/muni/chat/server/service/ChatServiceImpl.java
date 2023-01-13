@@ -36,7 +36,7 @@ public class ChatServiceImpl implements ChatService {
     public StoredMessage createNewChatMessage(String text, String author, String textColor, String backgroundColor) {
         UUID uuid = UUID.randomUUID();
         StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author, textColor, backgroundColor);
-        messages.add(c);
+        messages.add(0, c);
         return c;
     }
 
