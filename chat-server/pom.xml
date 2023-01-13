@@ -78,7 +78,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!--
                   starts and stops the built application during integration test so that
-                  springdoc-openapi-maven-plugin can download generated openapi.yaml from it
+                  * springdoc-openapi-maven-plugin can download generated openapi.yaml from it
+                  * integration tests can use it
                 -->
                 <executions>
                     <execution>
@@ -121,6 +122,11 @@
                     <outputFileName>openapi.yaml</outputFileName>
                     <outputDir>..</outputDir>
                 </configuration>
+            </plugin>
+
+            <!-- run integration tests in "mvn verify" phase -->
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

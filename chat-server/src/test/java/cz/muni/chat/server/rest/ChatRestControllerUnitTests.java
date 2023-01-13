@@ -34,17 +34,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Unit tests.
+ * <p>
+ * Unit tests are run by Maven's surefire plugin in the "mvn test" phase,
+ * the class name must end with "Test" or "Tests".
+ * <p>
+ * The unit tests test the RestController as a separated unit, with mock (fake)
+ * implementation of ChatService which provides exactly the expected data only
+ * and with mock implementation of Spring MVC that calls the RestController.
+ */
 @WebMvcTest(ChatRestController.class)
-class ChatRestControllerTest {
+class ChatRestControllerUnitTests {
 
-    private static final Logger log = LoggerFactory.getLogger(ChatRestControllerTest.class);
+    private static final Logger log = LoggerFactory.getLogger(ChatRestControllerUnitTests.class);
 
+    // injected mock implementation of Spring MVC
     @Autowired
     private MockMvc mockMvc;
 
+    // injected mock implementation of the ChatService interface
     @MockBean
     private ChatService mockChatService;
 
+    // injected mapper for converting classes into JSON strings
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -89,7 +102,7 @@ class ChatRestControllerTest {
         mockMvc.perform(get("/api/message/01").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[?(@.id=='01')].text").value("hello"))
-                //.andDo(print())
+        //.andDo(print())
         ;
     }
 
@@ -120,8 +133,8 @@ class ChatRestControllerTest {
         n.setText(text);
         n.setTextColor(textColor);
         n.setBackgroundColor(BackgroundColor.WHITE);
-        mockMvc.perform(post("/api/messages?author="+author)
-                        .header("User-Agent","007")
+        mockMvc.perform(post("/api/messages?author=" + author)
+                        .header("User-Agent", "007")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(n))
                 )
@@ -137,20 +150,21 @@ class ChatRestControllerTest {
     @Test
     void createMessageWithoutText() throws Exception {
         log.debug("createMessageWithoutText");
-        // define what mock service returns when called
+        // mock service is not needed in this test
         // call controller and check the result
         NewChatMessageRequest n = new NewChatMessageRequest();
         n.setText(null);
         n.setTextColor("black");
         mockMvc.perform(post("/api/messages")
-                        .header("User-Agent","007")
+                        .header("User-Agent", "007")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(n))
                 )
                 .andExpect(status().isBadRequest())
-                //.andDo(print())
+        //.andDo(print())
         ;
     }
+
     @Test
     void paged() throws Exception {
         log.debug("paged");
@@ -159,10 +173,11 @@ class ChatRestControllerTest {
         Page<StoredMessage> page = new PageImpl<>(allMessages, p, allMessages.size());
         given(mockChatService.getPageOfMessages(any())).willReturn(page);
         // call controller and check the result
-        mockMvc.perform(get("/api/paged").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/paged?page={page}&size={size}", p.getPageNumber(), p.getPageSize()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value("01"))
                 .andExpect(jsonPath("$.content.length()").value(1))
+        //.andDo(print())
         ;
     }
 
