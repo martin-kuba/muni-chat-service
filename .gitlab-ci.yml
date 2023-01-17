@@ -1,0 +1,57 @@
+# tags must be X.Y.Z !
+#
+# following https://gitlab.com/gitlab-org/release-cli/-/tree/master/docs/examples/release-assets-as-generic-package/
+# and https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
+stages:
+  - build
+  - upload
+  - release
+
+variables:
+  # variable read by Maven for JVM options, see https://maven.apache.org/configure.html#maven_opts-environment-variable
+  MAVEN_OPTS: " -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository "
+  # our own variable for repeated options
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version "
+  # URL for uploading files 
+  PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/chat/${CI_COMMIT_TAG}"
+
+build:
+  stage: build
+  image: maven:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - "mvn versions:set -DnewVersion=${CI_COMMIT_TAG}"
+    - "mvn versions:commit"
+    - 'mvn $MAVEN_CLI_OPTS install'
+  cache:
+    # caches maven repo between runs
+    paths:
+      - .m2/repository
+  artifacts:
+    # keeps produced files for the next job
+    paths:
+      - chat-server/target/chat_service.jar
+      - chat-client-java-lib/target/chat-client-java-lib.jar
+
+upload:
+  stage: upload
+  image: curlimages/curl:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file chat-server/target/chat_service.jar ${PACKAGE_REGISTRY_URL}/chat_service.jar
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file chat-client-java-lib/target/chat-client-java-lib.jar ${PACKAGE_REGISTRY_URL}/chat-client-java-lib.jar
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - |
+      release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+        --assets-link "{\"name\":\"chat_service.jar\",\"url\":\"${PACKAGE_REGISTRY_URL}/chat_service.jar\"}" \
+        --assets-link "{\"name\":\"chat-client-java-lib.jar\",\"url\":\"${PACKAGE_REGISTRY_URL}/chat-client-java-lib.jar\"}"
