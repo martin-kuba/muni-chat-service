@@ -1,7 +1,10 @@
-# tags must be X.Y.Z !
+# This file specifies GitLab CI/CD pipeline, see https://docs.gitlab.com/ee/ci/
 #
-# following https://gitlab.com/gitlab-org/release-cli/-/tree/master/docs/examples/release-assets-as-generic-package/
-# and https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Maven.gitlab-ci.yml
+# Git tags must be of the format X.Y.Z because they are used as maven project versions!
+#
+# Inspired by https://gitlab.com/gitlab-org/release-cli/-/tree/master/docs/examples/release-assets-as-generic-package/
+
+# defines stages in the pipeline
 stages:
   - build
   - upload
@@ -15,15 +18,22 @@ variables:
   # URL for uploading files 
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/chat/${CI_COMMIT_TAG}"
 
+# the first job "build" belongs to the stage "build"
 build:
   stage: build
+  # name of Docker image in which the script commands are executed
   image: maven:latest
-  rules:
-    - if: $CI_COMMIT_TAG
+  # script is a list of linux shell commands
   script:
-    - "mvn versions:set -DnewVersion=${CI_COMMIT_TAG}"
-    - "mvn versions:commit"
-    - 'mvn $MAVEN_CLI_OPTS install'
+    # if the processed git commit is tagged, use the tag name as project version in pom.xml
+    - |
+      if [ -n "${CI_COMMIT_TAG}" ] ; then
+        echo "setting version ${CI_COMMIT_TAG}"
+        mvn versions:set -DnewVersion=${CI_COMMIT_TAG}
+        mvn versions:commit
+      fi
+    # run maven build
+    - 'mvn $MAVEN_CLI_OPTS clean install'
   cache:
     # caches maven repo between runs
     paths:
@@ -34,9 +44,11 @@ build:
       - chat-server/target/chat_service.jar
       - chat-client-java-lib/target/chat-client-java-lib.jar
 
+# the second job named "upload" uploads produced JAR files into package registry
 upload:
   stage: upload
   image: curlimages/curl:latest
+  # the job runs only if the commit is tagged
   rules:
     - if: $CI_COMMIT_TAG
   script:
@@ -45,9 +57,11 @@ upload:
     - |
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file chat-client-java-lib/target/chat-client-java-lib.jar ${PACKAGE_REGISTRY_URL}/chat-client-java-lib.jar
 
+# the third job named "release" creates a release and links the produced JAR files as its assets
 release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  # the job runs only if the commit is tagged
   rules:
     - if: $CI_COMMIT_TAG
   script:
