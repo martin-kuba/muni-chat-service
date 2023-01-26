@@ -108,11 +108,9 @@ public class ChatIT {
                     .andExpect(status().isOk())
                     .andReturn().getResponse().getContentAsString();
             log.debug("response: {}", response);
-            JsonNode tree = objectMapper.readTree(response);
-            String idFromJSON = tree.get("id").asText();
-            String textFromJSON = tree.get("text").asText();
-            assertThat("id", idFromJSON, is(equalTo(storedMessage.id())));
-            assertThat("text", textFromJSON, is(equalTo(storedMessage.text())));
+            ChatMessage chatMessage = objectMapper.readValue(response, ChatMessage.class);
+            assertThat("id", chatMessage.id(), is(equalTo(storedMessage.id())));
+            assertThat("text", chatMessage.text(), is(equalTo(storedMessage.text())));
         }
     }
 

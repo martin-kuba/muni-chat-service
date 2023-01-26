@@ -37,6 +37,7 @@
         <module>chat-server</module>
         <module>chat-client-java-lib</module>
         <module>chat-client-java</module>
+        <module>chat-server-generated</module>
     </modules>
 
     <!-- properties are inherited into children projects -->
