@@ -40,17 +40,44 @@
         <module>chat-server-generated</module>
     </modules>
 
-    <!-- properties are inherited into children projects -->
+    <!-- properties are inherited into children projects and can be used anywhere with ${property} -->
     <properties>
         <java.version>17</java.version>
+        <swagger-jakarta-version>2.2.8</swagger-jakarta-version>
     </properties>
 
     <build>
-        <!-- set that "mvn" alone means "mvn install" -->
+        <!-- sets that "mvn" alone means "mvn install" -->
         <defaultGoal>install</defaultGoal>
+
+        <!--
+            Sets versions of plugins for all modules in one place.
+            This does not include the listed plugins into modules,
+            modules still must be declared in each module that uses them,
+            just without <version>.
+         -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <version>6.2.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
-    <!-- set versions of dependencies for modules -->
+    <!--
+        Set versions of dependencies for all modules in one place.
+        This does not include the listed dependencies into modules,
+        dependencies still must be declared in each module that uses them,
+        just without <version>.
+    -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -62,6 +89,36 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>1.10.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>0.2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>1.6.9</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>2.0.1.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-models-jakarta</artifactId>
+                <version>${swagger-jakarta-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger-jakarta-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
