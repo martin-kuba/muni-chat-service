@@ -51,7 +51,7 @@ public class GeneratedServerIT {
             n.setText(text);
             n.setTextColor(textColor);
             n.setBackgroundColor(backgroundColor);
-            String reponse = mockMvc.perform(post("/api/messages?author=" + author)
+            String response = mockMvc.perform(post("/api/messages?author=" + author)
                             .header("User-Agent", "007")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(n))
@@ -62,8 +62,8 @@ public class GeneratedServerIT {
                     .andExpect(jsonPath("$.textColor").value(textColor.getValue()))
                     .andExpect(jsonPath("$.backgroundColor").value(backgroundColor.getValue()))
                     .andReturn().getResponse().getContentAsString();
-            log.debug("response = {}", reponse);
-            ChatMessage chatMessage = objectMapper.readValue(reponse, ChatMessage.class);
+            log.debug("response = {}", response);
+            ChatMessage chatMessage = objectMapper.readValue(response, ChatMessage.class);
             log.debug("msg = {}", chatMessage);
             msgs.add(chatMessage);
         }
