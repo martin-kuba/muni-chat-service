@@ -20,6 +20,10 @@ variables:
 
 # the first job "build" belongs to the stage "build"
 build:
+  # mark suitable for FI's shared runner
+  tags:
+    - shared-fi
+  # the stage for this job
   stage: build
   # name of Docker image in which the script commands are executed
   image: maven:latest
@@ -46,6 +50,8 @@ build:
 
 # the second job named "upload" uploads produced JAR files into package registry
 upload:
+  tags:
+    - shared-fi
   stage: upload
   image: curlimages/curl:latest
   # the job runs only if the commit is tagged
@@ -59,6 +65,8 @@ upload:
 
 # the third job named "release" creates a release and links the produced JAR files as its assets
 release:
+  tags:
+    - shared-fi
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   # the job runs only if the commit is tagged
