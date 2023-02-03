@@ -5,6 +5,7 @@ import cz.muni.chat.client.invoker.ApiException;
 import cz.muni.chat.client.model.BackgroundColorEnum;
 import cz.muni.chat.client.model.ChatMessage;
 import cz.muni.chat.client.model.NewChatMessageRequest;
+import cz.muni.chat.client.model.Organism;
 import cz.muni.chat.client.model.PageChatMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,49 +33,9 @@ public class Main implements CommandLineRunner {
         log.info("starting");
         ChatApi chat = new ChatApi(new ApiClient());
 
-        // list all messages
-        for (ChatMessage chatMessage : chat.getAllMessages()) {
-            log.info("message: {}", chatMessage);
-        }
-
-        // create a new message
-        BackgroundColorEnum[] colors = BackgroundColorEnum.values();
-        BackgroundColorEnum bg = colors[new Random().nextInt(colors.length)];
-        ChatMessage message = chat.createMessage(
-                new NewChatMessageRequest()
-                        .text("Hello!")
-                        .textColor(TextColorEnum.BLACK)
-                        .backgroundColor(bg),
-                "me",
-                "UltraChat 1.0");
-
-        log.info("new message = {}", message);
-        ZonedDateTime timestamp = message.getTimestamp().atZoneSameInstant(ZoneId.systemDefault());
-        log.info("timestamp: {}", timestamp);
-
-        // create more messages
-        for (int i = 3; i <= 8; i++) {
-            chat.createMessage(new NewChatMessageRequest().text("Message num " + i), "robot", null);
-        }
-        //get paged messages
-        int pageIndex = 2;
-        int pageSize = 3;
-        PageChatMessage paged = chat.paged(pageIndex, pageSize, null);
-        log.info("paged messages: page={}/{} offset={} items={}/{} total={}",
-                paged.getNumber() + 1, paged.getTotalPages(),
-                paged.getPageable().getOffset(),
-                paged.getNumberOfElements(), paged.getSize(),
-                paged.getTotalElements());
-        for (ChatMessage chatMessage : paged.getContent()) {
-            log.info("msg: {}", chatMessage);
-        }
-
-        // deliberately make a wrong call to show catching an exception
-        try {
-            chat.getMessage("1");
-        } catch (ApiException ex) {
-            log.info("expected exception", ChatException.from(ex));
-        }
+        Organism pokus = chat.pokus();
+        log.info("pokus {}", pokus);
+        log.info("pokus class name {}", pokus.getClass().getName());
 
     }
 }

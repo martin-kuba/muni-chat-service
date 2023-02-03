@@ -4,6 +4,8 @@ import cz.muni.chat.server.facade.BackgroundColor;
 import cz.muni.chat.server.facade.ChatMessage;
 import cz.muni.chat.server.facade.ErrorMessage;
 import cz.muni.chat.server.facade.NewChatMessageRequest;
+import cz.muni.chat.server.facade.Organism;
+import cz.muni.chat.server.facade.Pet;
 import cz.muni.chat.server.service.ChatService;
 import cz.muni.chat.server.service.StoredMessage;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -198,4 +200,19 @@ public class ChatRestController {
         return chatService.getPageOfMessages(pageable).map(ChatMessage::fromStoredMessage);
     }
 
+    @Operation(
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = Organism.class))
+                    ),
+            }
+    )
+    @GetMapping(path = "/pokus")
+    public Organism pokus() {
+        Pet pet = new Pet();
+        pet.setLatinName("felix");
+        pet.setNumberOfLegs(4);
+        pet.setName("Micka");
+        return pet;
+    }
 }

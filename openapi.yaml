@@ -94,6 +94,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
+  /api/pokus:
+    get:
+      tags:
+      - Chat
+      operationId: pokus
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Organism'
   /api/paged:
     get:
       tags:
@@ -222,6 +234,39 @@ components:
         Object for requesting new message.
         **Text** of the message must be located in the request body because URLs are limited in size.
         See [What is the maximum length of a URL in different browsers?](https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
+    Organism:
+      type: object
+      properties:
+        latinName:
+          type: string
+        typeName:
+          type: string
+      discriminator:
+        propertyName: typeName
+        mapping:
+          cz.muni.chat.server.facade.Animal: '#/components/schemas/Animal'
+          cz.muni.chat.server.facade.Pet: '#/components/schemas/Pet'
+    Animal:
+      type: object
+      discriminator:
+        propertyName: typeName
+      allOf:
+      - $ref: '#/components/schemas/Organism'
+      - type: object
+        properties:
+          numberOfLegs:
+            type: integer
+            format: int32
+    Pet:
+      title: named Pet
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Animal'
+      - type: object
+        properties:
+          name:
+            type: string
+
     ChatMessage:
       title: chat message
       required:
