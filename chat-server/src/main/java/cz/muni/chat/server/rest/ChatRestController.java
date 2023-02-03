@@ -77,7 +77,7 @@ import java.util.List;
         })
 )
 @Tag(name = "Chat", description = "microservice for chat") // metadata for inclusion into OpenAPI document
-@RequestMapping("/api") // common prefix for all URLs handled by this controller
+@RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE) // common prefix for all URLs handled by this controller
 public class ChatRestController {
 
     // logging with SLF4J
@@ -103,7 +103,7 @@ public class ChatRestController {
                     a **text color** and a **background color**.
                     It is possible to use [MarkDown](https://www.markdownguide.org/) in descriptions.
                     """)
-    @GetMapping(path = "/messages", produces = MediaType.APPLICATION_JSON_VALUE) // URL mapping of this operation
+    @GetMapping(path = "/messages") // URL mapping of this operation
     @CrossOrigin(origins = "*") // CORS headers needed for JavaScript clients
     public List<ChatMessage> getAllMessages(HttpServletRequest req) {
         log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
@@ -124,7 +124,7 @@ public class ChatRestController {
                             content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
             }
     )
-    @GetMapping(path = "/message/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/message/{id}")
     @CrossOrigin(origins = "*")
     public ChatMessage getMessage(@PathVariable String id, HttpServletRequest req) {
         log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
@@ -153,7 +153,7 @@ public class ChatRestController {
                     ),
             }
     )
-    @PostMapping(path = "/messages", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/messages")
     @CrossOrigin(origins = "*")
     @ResponseStatus(HttpStatus.CREATED)
     public ChatMessage createMessage(@Valid @RequestBody NewChatMessageRequest r,
@@ -191,7 +191,7 @@ public class ChatRestController {
                     The parameter `page` specifies zero-based index of the requested page,
                     and the parameter `size` specifies the size of the page.
                     """)
-    @GetMapping(path = "/paged", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/paged")
     @CrossOrigin(origins = "*")
     public Page<ChatMessage> paged(@ParameterObject Pageable pageable, HttpServletRequest req) {
         log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
