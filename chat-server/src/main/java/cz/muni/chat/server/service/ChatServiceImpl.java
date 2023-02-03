@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -17,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ChatServiceImpl implements ChatService {
 
     private static final Logger log = LoggerFactory.getLogger(ChatServiceImpl.class);
+    private static final Random random = new Random();
 
     // in-memory storage of messages
     private final List<StoredMessage> messages = new CopyOnWriteArrayList<>();
@@ -35,7 +37,8 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public StoredMessage createNewChatMessage(String text, String author, String textColor, String backgroundColor) {
         UUID uuid = UUID.randomUUID();
-        StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author, textColor, backgroundColor);
+        StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author,
+                textColor, backgroundColor, random.nextLong());
         messages.add(0, c);
         return c;
     }

@@ -62,7 +62,7 @@ class ChatRestControllerUnitTests {
     private ObjectMapper objectMapper;
 
     static ZonedDateTime now = ZonedDateTime.of(2023, 1, 5, 10, 0, 0, 0, ZoneId.systemDefault());
-    static StoredMessage message01 = new StoredMessage("01", now, "hello", null, null, null);
+    static StoredMessage message01 = new StoredMessage("01", now, "hello", null, null, null, null);
     static List<StoredMessage> allMessages = List.of(message01);
 
     @BeforeAll
@@ -126,7 +126,7 @@ class ChatRestControllerUnitTests {
         String author = "Shakespeare";
         String textColor = "black";
         BackgroundColor backgroundColor = BackgroundColor.WHITE;
-        StoredMessage msg = new StoredMessage(id, now, text, author, textColor, backgroundColor.getValue());
+        StoredMessage msg = new StoredMessage(id, now, text, author, textColor, backgroundColor.getValue(), null);
         given(mockChatService.createNewChatMessage(text, author, textColor, backgroundColor.getValue())).willReturn(msg);
         // call controller and check the result
         NewChatMessageRequest n = new NewChatMessageRequest();
