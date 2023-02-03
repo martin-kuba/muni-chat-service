@@ -108,7 +108,7 @@ public class ChatRestController {
     public List<ChatMessage> getAllMessages(HttpServletRequest req) {
         log.info("{} {} called from {}", req.getMethod(), req.getRequestURI(), req.getRemoteHost());
         // get messages from the service and convert them into DTOs that get serialized into JSON
-        return chatService.getAllChatMessages().stream().map(ChatMessage::fromStoredMessage).toList();
+        return chatService.getAllMessages().stream().map(ChatMessage::fromStoredMessage).toList();
     }
 
 
@@ -176,7 +176,7 @@ public class ChatRestController {
         }
         BackgroundColor bc = (r.getBackgroundColor() == null) ? BackgroundColor.LIGHTGRAY : r.getBackgroundColor();
         // create message
-        StoredMessage message = chatService.createNewChatMessage(r.getText(), author, r.getTextColor(), bc.getValue());
+        StoredMessage message = chatService.createNewMessage(r.getText(), author, r.getTextColor(), bc.getValue());
         // return the created message
         return ChatMessage.fromStoredMessage(message);
     }

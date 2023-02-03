@@ -85,7 +85,7 @@ class ChatRestControllerUnitTests {
     void getAllMessages() throws Exception {
         log.debug("getAllMessages");
         // define what mock service returns when called
-        given(mockChatService.getAllChatMessages()).willReturn(allMessages);
+        given(mockChatService.getAllMessages()).willReturn(allMessages);
         // call controller and check the result
         mockMvc.perform(get("/api/messages").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -127,7 +127,7 @@ class ChatRestControllerUnitTests {
         String textColor = "black";
         BackgroundColor backgroundColor = BackgroundColor.WHITE;
         StoredMessage msg = new StoredMessage(id, now, text, author, textColor, backgroundColor.getValue(), null);
-        given(mockChatService.createNewChatMessage(text, author, textColor, backgroundColor.getValue())).willReturn(msg);
+        given(mockChatService.createNewMessage(text, author, textColor, backgroundColor.getValue())).willReturn(msg);
         // call controller and check the result
         NewChatMessageRequest n = new NewChatMessageRequest();
         n.setText(text);

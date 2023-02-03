@@ -25,17 +25,17 @@ public class ChatServiceImpl implements ChatService {
 
     @PostConstruct
     public void init() {
-        this.createNewChatMessage("first message", "\uD83D\uDEC8 system", "black", "lightblue");
+        this.createNewMessage("first message", "\uD83D\uDEC8 system", "black", "lightblue");
         log.info("the first message added");
     }
 
     @Override
-    public List<StoredMessage> getAllChatMessages() {
+    public List<StoredMessage> getAllMessages() {
         return messages;
     }
 
     @Override
-    public StoredMessage createNewChatMessage(String text, String author, String textColor, String backgroundColor) {
+    public StoredMessage createNewMessage(String text, String author, String textColor, String backgroundColor) {
         UUID uuid = UUID.randomUUID();
         StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author,
                 textColor, backgroundColor, random.nextLong());

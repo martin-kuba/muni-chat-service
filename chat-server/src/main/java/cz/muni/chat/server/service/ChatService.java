@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ChatService {
 
-    List<StoredMessage> getAllChatMessages();
+    List<StoredMessage> getAllMessages();
 
-    StoredMessage createNewChatMessage(String text, String author, String textColor, String backgroundColor);
+    StoredMessage createNewMessage(String text, String author, String textColor, String backgroundColor);
 
     StoredMessage getMessage(String id);
 

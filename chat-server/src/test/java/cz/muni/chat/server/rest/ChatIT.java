@@ -99,10 +99,10 @@ public class ChatIT {
         log.debug("Integration Test - testMessageIds");
         //create 3 more messages directly in service
         for(int i = 1; i<4; i++) {
-            chatService.createNewChatMessage("message "+i,null,null, null);
+            chatService.createNewMessage("message "+i,null,null, null);
         }
         // get each message by calling URL and compare its content
-        for (StoredMessage storedMessage : chatService.getAllChatMessages()) {
+        for (StoredMessage storedMessage : chatService.getAllMessages()) {
             // read each message by calling the RestController
             String response = mockMvc.perform(get("/api/message/{id}",storedMessage.id()).contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())

@@ -38,7 +38,7 @@ public class ChatUIController {
         PrintWriter out = res.getWriter();
         out.println("<html><body><h1>Chat Service</h1>");
         // prevent race condition on concurrent accesses
-        List<StoredMessage> chatMessages = chatService.getAllChatMessages();
+        List<StoredMessage> chatMessages = chatService.getAllMessages();
         // iterate messages in reverse order
         for (int i = 0 ; i < chatMessages.size(); i++) {
             StoredMessage cm = chatMessages.get(i);
