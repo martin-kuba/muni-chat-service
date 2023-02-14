@@ -13,3 +13,9 @@ dependency-reduced-pom.xml
 *.ipr
 *.iws
 .idea/
+
+# Ignore generated Python files
+chat-client-python/chat_openapi
+chat-client-python/chat_openapi_README.md
+chat-client-python/.openapi-generator/
+chat-client-python/.openapi-generator-ignore
