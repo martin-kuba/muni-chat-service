@@ -48,12 +48,9 @@ public class ChatImpl implements ChatApiDelegate {
         String text = r.getText();
         BackgroundColorEnum backgroundColor = r.getBackgroundColor();
         TextColorEnum textColor = r.getTextColor();
-        ChatMessage chatMessage = new ChatMessage()
-                .id(UUID.randomUUID().toString())
-                .timestamp(OffsetDateTime.now())
+        ChatMessage chatMessage = new ChatMessage(UUID.randomUUID().toString(), OffsetDateTime.now(), text)
                 .author(author)
-                .text(text)
-                .textColor(textColor.getValue())
+                .textColor(textColor != null ? textColor.getValue() : null)
                 .backgroundColor(backgroundColor);
         messages.add(0, chatMessage);
         return new ResponseEntity<>(chatMessage, HttpStatus.CREATED);
@@ -70,16 +67,14 @@ public class ChatImpl implements ChatApiDelegate {
         SortObject s = new SortObject()
                 .sorted(p.getSort().isSorted())
                 .unsorted(p.getSort().isUnsorted())
-                .empty(p.getSort().isEmpty())
-                ;
+                .empty(p.getSort().isEmpty());
         PageableObject pageableObject = new PageableObject()
                 .paged(p.isPaged())
                 .unpaged(p.isUnpaged())
                 .pageNumber(p.getPageNumber())
                 .pageSize(p.getPageSize())
                 .sort(s)
-                .offset(p.getOffset())
-                ;
+                .offset(p.getOffset());
         PageChatMessage pageChatMessage = new PageChatMessage()
                 .content(chatMessages)
                 .pageable(pageableObject)
@@ -91,9 +86,8 @@ public class ChatImpl implements ChatApiDelegate {
                 .number(m.getNumber())
                 .numberOfElements(m.getNumberOfElements())
                 .size(m.getSize())
-                .sort(s)
-                ;
-        return new ResponseEntity<>(pageChatMessage,  HttpStatus.OK);
+                .sort(s);
+        return new ResponseEntity<>(pageChatMessage, HttpStatus.OK);
     }
 
     private final List<ChatMessage> messages = new CopyOnWriteArrayList<>();

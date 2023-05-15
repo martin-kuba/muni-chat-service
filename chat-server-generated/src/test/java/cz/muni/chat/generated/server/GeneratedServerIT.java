@@ -47,8 +47,7 @@ public class GeneratedServerIT {
             String text = "message " + i;
             TextColorEnum textColor = TextColorEnum.BLACK;
             BackgroundColorEnum backgroundColor = BackgroundColorEnum.WHITE;
-            NewChatMessageRequest n = new NewChatMessageRequest();
-            n.setText(text);
+            NewChatMessageRequest n = new NewChatMessageRequest(text);
             n.setTextColor(textColor);
             n.setBackgroundColor(backgroundColor);
             String response = mockMvc.perform(post("/api/messages?author=" + author)
