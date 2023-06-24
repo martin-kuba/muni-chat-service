@@ -43,7 +43,7 @@
     <!-- properties are inherited into children projects and can be used anywhere with ${property} -->
     <properties>
         <java.version>17</java.version>
-        <swagger-jakarta-version>2.2.12</swagger-jakarta-version>
+        <swagger-jakarta-version>2.2.13</swagger-jakarta-version>
     </properties>
 
     <build>
