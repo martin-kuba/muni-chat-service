@@ -42,7 +42,7 @@
 
     <!-- properties are inherited into children projects and can be used anywhere with ${property} -->
     <properties>
-        <java.version>19</java.version>
+        <java.version>21</java.version>
         <swagger-jakarta-version>2.2.16</swagger-jakarta-version>
     </properties>
 
