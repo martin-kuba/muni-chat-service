@@ -1,0 +1,29 @@
+meta {
+  name: message by id
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8080/api/message/{{msg_id}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+assert {
+  res.status: eq 200
+  res.body: isJson 
+  res.body.id: eq {{msg_id}}
+}
+
+script:pre-request {
+  const axios = require("axios");
+  
+  const response = await axios.get("http://localhost:8080/api/messages");
+  
+  bru.setVar("msg_id", response.data[0].id);
+}

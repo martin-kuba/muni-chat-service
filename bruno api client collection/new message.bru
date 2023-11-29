@@ -1,0 +1,23 @@
+meta {
+  name: new message
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/messages?author=Tim
+  body: json
+  auth: none
+}
+
+query {
+  author: Tim
+}
+
+body:json {
+  {
+    "text": "How are you?",
+    "textColor": "blue",
+    "backgroundColor": "aquamarine"
+  }
+}
