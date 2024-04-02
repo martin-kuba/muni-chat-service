@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -52,22 +53,25 @@ public class ChatImpl implements ChatApiDelegate {
                 .author(author)
                 .textColor(textColor != null ? textColor.getValue() : null)
                 .backgroundColor(backgroundColor);
-        messages.add(0, chatMessage);
+        messages.addFirst(chatMessage);
         return new ResponseEntity<>(chatMessage, HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<PageChatMessage> paged(Integer page, Integer size, List<String> sort) {
-        log.debug("paged(page={}, size={}, sort={})", page, size, sort);
-        PageRequest p = PageRequest.of(page, size);
+        log.debug("paged(page={}, size={})", page, size);
+        PageRequest p = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ChatMessage> chatMessages = messages.stream().skip(p.getOffset()).limit(p.getPageSize()).toList();
         Page<ChatMessage> m = new PageImpl<>(chatMessages, p, messages.size());
 
         // copy to generated models :-(
-        SortObject s = new SortObject()
-                .sorted(p.getSort().isSorted())
-                .unsorted(p.getSort().isUnsorted())
-                .empty(p.getSort().isEmpty());
+        List<SortObject> s = p.getSort().get().map(order -> new SortObject()
+                .property(order.getProperty())
+                .ascending(order.isAscending())
+                .direction(order.getDirection().name())
+                .ignoreCase(order.isIgnoreCase())
+                .nullHandling(order.getNullHandling().name())
+        ).toList();
         PageableObject pageableObject = new PageableObject()
                 .paged(p.isPaged())
                 .unpaged(p.isUnpaged())

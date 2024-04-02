@@ -187,9 +187,10 @@ public class ChatRestController {
     @Operation(
             summary = "Paged messages",
             description = """
-                    Returns a page of chat messages. Messages are ordered from the newest to the oldest.
+                    Returns a page of chat messages.
                     The parameter `page` specifies zero-based index of the requested page,
-                    and the parameter `size` specifies the size of the page.
+                    the parameter `size` specifies the size of the page.
+                    The parameter `sort` is ignored, sorting is always from the newest to the oldest.
                     """)
     @GetMapping(path = "/paged")
     @CrossOrigin(origins = "*")

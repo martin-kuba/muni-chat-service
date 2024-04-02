@@ -100,9 +100,10 @@ paths:
       - Chat
       summary: Paged messages
       description: |
-        Returns a page of chat messages. Messages are ordered from the newest to the oldest.
+        Returns a page of chat messages.
         The parameter `page` specifies zero-based index of the requested page,
-        and the parameter `size` specifies the size of the page.
+        the parameter `size` specifies the size of the page.
+        The parameter `sort` is ignored, sorting is always from the newest to the oldest.
       operationId: paged
       parameters:
       - name: page
@@ -257,12 +258,12 @@ components:
     PageChatMessage:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
         pageable:
           $ref: '#/components/schemas/PageableObject'
         first:
@@ -280,7 +281,9 @@ components:
           type: integer
           format: int32
         sort:
-          $ref: '#/components/schemas/SortObject'
+          type: array
+          items:
+            $ref: '#/components/schemas/SortObject'
         numberOfElements:
           type: integer
           format: int32
@@ -299,7 +302,9 @@ components:
           type: integer
           format: int64
         sort:
-          $ref: '#/components/schemas/SortObject'
+          type: array
+          items:
+            $ref: '#/components/schemas/SortObject'
         paged:
           type: boolean
         unpaged:
@@ -307,11 +312,15 @@ components:
     SortObject:
       type: object
       properties:
-        sorted:
+        direction:
+          type: string
+        nullHandling:
+          type: string
+        ascending:
           type: boolean
-        empty:
-          type: boolean
-        unsorted:
+        property:
+          type: string
+        ignoreCase:
           type: boolean
   responses:
     SingleMessageResponse:

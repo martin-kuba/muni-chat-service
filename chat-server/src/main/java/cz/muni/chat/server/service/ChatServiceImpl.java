@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -39,7 +41,7 @@ public class ChatServiceImpl implements ChatService {
         UUID uuid = UUID.randomUUID();
         StoredMessage c = new StoredMessage(uuid.toString(), ZonedDateTime.now(), text, author,
                 textColor, backgroundColor, random.nextLong());
-        messages.add(0, c);
+        messages.addFirst(c);
         return c;
     }
 
@@ -62,7 +64,8 @@ public class ChatServiceImpl implements ChatService {
                 .skip(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .toList();
-        Page<StoredMessage> page = new PageImpl<>(msgs, pageable, messages.size());
+        Page<StoredMessage> page = new PageImpl<>(msgs, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.Direction.DESC, "timestamp"), messages.size());
         log.debug("pageable = {}", pageable);
         log.debug("page: {}", page);
         return page;
