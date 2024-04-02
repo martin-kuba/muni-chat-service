@@ -2,6 +2,7 @@ package cz.muni.chat.generated.server.api;
 
 import cz.muni.chat.generated.server.model.BackgroundColorEnum;
 import cz.muni.chat.generated.server.model.ChatMessage;
+import cz.muni.chat.generated.server.model.ErrorMessage;
 import cz.muni.chat.generated.server.model.NewChatMessageRequest;
 import cz.muni.chat.generated.server.model.NewChatMessageRequest.TextColorEnum;
 import cz.muni.chat.generated.server.model.PageChatMessage;
@@ -36,11 +37,22 @@ public class ChatImpl implements ChatApiDelegate {
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
+    @SuppressWarnings({"rawtypes","unchecked"})
     @Override
     public ResponseEntity<ChatMessage> getMessage(String id) {
         log.debug("getMessage({})", id);
         ChatMessage chatMessage = messages.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
-        return new ResponseEntity<>(chatMessage, chatMessage != null ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        if (chatMessage != null) {
+            return new ResponseEntity<>(chatMessage, HttpStatus.OK);
+        } else {
+            ErrorMessage errorMessage = new ErrorMessage()
+                    .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .path("/api/message/"+id)
+                    .timestamp(OffsetDateTime.now())
+                    .message("message with id=" + id + " not found");
+            return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
