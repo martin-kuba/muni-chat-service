@@ -3,6 +3,10 @@ from typing import List
 from importlib import metadata
 from packaging import version
 
+if version.parse(metadata.version('pydantic')) < version.parse("2.0"):
+    print("pydantic 2+ required")
+    exit(1)
+
 from chat_openapi.exceptions import ApiException
 from chat_openapi.configuration import Configuration
 from chat_openapi.api_client import ApiClient
@@ -11,9 +15,6 @@ from chat_openapi.models.chat_message import ChatMessage
 from chat_openapi.models.new_chat_message_request import NewChatMessageRequest
 from chat_openapi.models.background_color_enum import BackgroundColorEnum
 
-if version.parse(metadata.version('pydantic')) < version.parse("2.0"):
-    print("pydantic 2+ required")
-    exit(1)
 
 configuration = Configuration(host="http://localhost:8080")
 configuration.debug = False
