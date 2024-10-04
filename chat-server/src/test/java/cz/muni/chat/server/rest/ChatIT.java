@@ -84,11 +84,10 @@ public class ChatIT {
         int pageSize = 3;
         mockMvc.perform(get("/api/paged?page={page}&size={size}", pageIndex, pageSize).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.pageable.paged").value(true))
-                .andExpect(jsonPath("$.pageable.pageNumber").value(pageIndex))
-                .andExpect(jsonPath("$.pageable.pageSize").value(pageSize))
-                .andExpect(jsonPath("$.totalElements").value(totalMessages))
-                .andExpect(jsonPath("$.numberOfElements").value(pageSize))
+                .andExpect(jsonPath("$.page.size").value(pageSize))
+                .andExpect(jsonPath("$.page.number").value(pageIndex))
+                .andExpect(jsonPath("$.page.totalElements").value(totalMessages))
+                .andExpect(jsonPath("$.page.totalPages").value(4))
                 .andExpect(jsonPath("$.content.length()").value(pageSize))
 //                .andDo(print())
                 ;

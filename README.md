@@ -26,7 +26,7 @@ This project demonstrates the following features:
 
 ## Installation
 
-Prerequisites: git, [Apache Maven](https://maven.apache.org/) and JDK 17+ 
+Prerequisites: git, [Apache Maven](https://maven.apache.org/) and JDK 21+
 
 Download and compile:
 ```bash

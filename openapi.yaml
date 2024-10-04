@@ -59,7 +59,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ChatMessage'
+                  $ref: "#/components/schemas/ChatMessage"
     post:
       tags:
       - Chat
@@ -83,17 +83,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewChatMessageRequest'
+              $ref: "#/components/schemas/NewChatMessageRequest"
         required: true
       responses:
         "201":
-          $ref: '#/components/responses/SingleMessageResponse'
+          $ref: "#/components/responses/SingleMessageResponse"
         "400":
           description: input data were not correct
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: "#/components/schemas/ErrorMessage"
   /api/paged:
     get:
       tags:
@@ -137,7 +137,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageChatMessage'
+                $ref: "#/components/schemas/PagedModelChatMessage"
   /api/message/{id}:
     get:
       tags:
@@ -153,13 +153,13 @@ paths:
           type: string
       responses:
         "200":
-          $ref: '#/components/responses/SingleMessageResponse'
+          $ref: "#/components/responses/SingleMessageResponse"
         "404":
           description: message not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: "#/components/schemas/ErrorMessage"
 components:
   schemas:
     ErrorMessage:
@@ -199,7 +199,7 @@ components:
       - aquamarine
       - lightyellow
       - lightblue
-      - '#ffe4c4'
+      - "#ffe4c4"
     NewChatMessageRequest:
       required:
       - text
@@ -218,7 +218,7 @@ components:
           - blue
           - darkgrey
         backgroundColor:
-          $ref: '#/components/schemas/BackgroundColorEnum'
+          $ref: "#/components/schemas/BackgroundColorEnum"
       description: |
         Object for requesting new message.
         **Text** of the message must be located in the request body because URLs are limited in size.
@@ -253,82 +253,39 @@ components:
           description: HTML color name or RGB hex code
           example: black
         backgroundColor:
-          $ref: '#/components/schemas/BackgroundColorEnum'
+          $ref: "#/components/schemas/BackgroundColorEnum"
       description: represents a message in a chat
-    PageChatMessage:
+    PageMetadata:
       type: object
       properties:
-        totalPages:
+        size:
           type: integer
-          format: int32
+          format: int64
+        number:
+          type: integer
+          format: int64
         totalElements:
           type: integer
           format: int64
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
-        size:
+        totalPages:
           type: integer
-          format: int32
+          format: int64
+    PagedModelChatMessage:
+      type: object
+      properties:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/ChatMessage'
-        number:
-          type: integer
-          format: int32
-        sort:
-          type: array
-          items:
-            $ref: '#/components/schemas/SortObject'
-        numberOfElements:
-          type: integer
-          format: int32
-        empty:
-          type: boolean
-    PageableObject:
-      type: object
-      properties:
-        pageNumber:
-          type: integer
-          format: int32
-        pageSize:
-          type: integer
-          format: int32
-        offset:
-          type: integer
-          format: int64
-        sort:
-          type: array
-          items:
-            $ref: '#/components/schemas/SortObject'
-        paged:
-          type: boolean
-        unpaged:
-          type: boolean
-    SortObject:
-      type: object
-      properties:
-        direction:
-          type: string
-        nullHandling:
-          type: string
-        ascending:
-          type: boolean
-        property:
-          type: string
-        ignoreCase:
-          type: boolean
+            $ref: "#/components/schemas/ChatMessage"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
   responses:
     SingleMessageResponse:
       description: response containing a single message
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ChatMessage'
+            $ref: "#/components/schemas/ChatMessage"
       links:
         link_to_getMessage:
           operationId: getMessage

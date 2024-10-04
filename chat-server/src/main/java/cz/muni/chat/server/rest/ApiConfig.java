@@ -13,8 +13,14 @@ import org.springframework.boot.web.servlet.context.ServletWebServerInitializedE
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+
+import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @Configuration
+// fix for paging
+// see https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.page
+@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class ApiConfig {
 
     private static final Logger log = LoggerFactory.getLogger(ApiConfig.class);

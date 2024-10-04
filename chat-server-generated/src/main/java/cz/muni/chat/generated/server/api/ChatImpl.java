@@ -5,9 +5,8 @@ import cz.muni.chat.generated.server.model.ChatMessage;
 import cz.muni.chat.generated.server.model.ErrorMessage;
 import cz.muni.chat.generated.server.model.NewChatMessageRequest;
 import cz.muni.chat.generated.server.model.NewChatMessageRequest.TextColorEnum;
-import cz.muni.chat.generated.server.model.PageChatMessage;
-import cz.muni.chat.generated.server.model.PageableObject;
-import cz.muni.chat.generated.server.model.SortObject;
+import cz.muni.chat.generated.server.model.PageMetadata;
+import cz.muni.chat.generated.server.model.PagedModelChatMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,7 +36,7 @@ public class ChatImpl implements ChatApiDelegate {
         return new ResponseEntity<>(messages, HttpStatus.OK);
     }
 
-    @SuppressWarnings({"rawtypes","unchecked"})
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public ResponseEntity<ChatMessage> getMessage(String id) {
         log.debug("getMessage({})", id);
@@ -48,7 +47,7 @@ public class ChatImpl implements ChatApiDelegate {
             ErrorMessage errorMessage = new ErrorMessage()
                     .error(HttpStatus.NOT_FOUND.getReasonPhrase())
                     .status(HttpStatus.NOT_FOUND.value())
-                    .path("/api/message/"+id)
+                    .path("/api/message/" + id)
                     .timestamp(OffsetDateTime.now())
                     .message("message with id=" + id + " not found");
             return new ResponseEntity(errorMessage, HttpStatus.NOT_FOUND);
@@ -70,40 +69,22 @@ public class ChatImpl implements ChatApiDelegate {
     }
 
     @Override
-    public ResponseEntity<PageChatMessage> paged(Integer page, Integer size, List<String> sort) {
+    public ResponseEntity<PagedModelChatMessage> paged(Integer page, Integer size, List<String> sort) {
         log.debug("paged(page={}, size={})", page, size);
         PageRequest p = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp"));
         List<ChatMessage> chatMessages = messages.stream().skip(p.getOffset()).limit(p.getPageSize()).toList();
         Page<ChatMessage> m = new PageImpl<>(chatMessages, p, messages.size());
 
         // copy to generated models :-(
-        List<SortObject> s = p.getSort().get().map(order -> new SortObject()
-                .property(order.getProperty())
-                .ascending(order.isAscending())
-                .direction(order.getDirection().name())
-                .ignoreCase(order.isIgnoreCase())
-                .nullHandling(order.getNullHandling().name())
-        ).toList();
-        PageableObject pageableObject = new PageableObject()
-                .paged(p.isPaged())
-                .unpaged(p.isUnpaged())
-                .pageNumber(p.getPageNumber())
-                .pageSize(p.getPageSize())
-                .sort(s)
-                .offset(p.getOffset());
-        PageChatMessage pageChatMessage = new PageChatMessage()
-                .content(chatMessages)
-                .pageable(pageableObject)
-                .last(m.isLast())
-                .first(m.isFirst())
-                .empty(m.isEmpty())
-                .totalPages(m.getTotalPages())
+        PageMetadata pageMetadata = new PageMetadata()
+                .size((long) m.getSize())
+                .number((long) m.getNumber())
                 .totalElements(m.getTotalElements())
-                .number(m.getNumber())
-                .numberOfElements(m.getNumberOfElements())
-                .size(m.getSize())
-                .sort(s);
-        return new ResponseEntity<>(pageChatMessage, HttpStatus.OK);
+                .totalPages((long) m.getTotalPages());
+        PagedModelChatMessage pagedModelChatMessage = new PagedModelChatMessage()
+                .content(chatMessages)
+                .page(pageMetadata);
+        return new ResponseEntity<>(pagedModelChatMessage, HttpStatus.OK);
     }
 
     private final List<ChatMessage> messages = new CopyOnWriteArrayList<>();

@@ -5,7 +5,8 @@ import cz.muni.chat.client.invoker.ApiException;
 import cz.muni.chat.client.model.BackgroundColorEnum;
 import cz.muni.chat.client.model.ChatMessage;
 import cz.muni.chat.client.model.NewChatMessageRequest;
-import cz.muni.chat.client.model.PageChatMessage;
+import cz.muni.chat.client.model.PageMetadata;
+import cz.muni.chat.client.model.PagedModelChatMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -59,13 +60,13 @@ public class Main implements CommandLineRunner {
         //get paged messages
         int pageIndex = 2;
         int pageSize = 3;
-        PageChatMessage paged = chat.paged(pageIndex, pageSize, null);
-        log.info("paged messages: page={}/{} offset={} items={}/{} total={}",
-                paged.getNumber() + 1, paged.getTotalPages(),
-                paged.getPageable().getOffset(),
-                paged.getNumberOfElements(), paged.getSize(),
-                paged.getTotalElements());
-        for (ChatMessage chatMessage : paged.getContent()) {
+        PagedModelChatMessage pagedModel = chat.paged(pageIndex, pageSize, null);
+        PageMetadata page = pagedModel.getPage();
+        log.info("paged messages: page={}/{} page.size={} totalElements={}",
+                page.getNumber() + 1, page.getTotalPages(),
+                page.getSize(),
+                page.getTotalElements());
+        for (ChatMessage chatMessage : pagedModel.getContent()) {
             log.info("msg: {}", chatMessage);
         }
 
