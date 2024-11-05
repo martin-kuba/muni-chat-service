@@ -3,6 +3,9 @@
   "extends": [
     "config:recommended"
   ],
+  "ignoreDeps": [
+    "cz.muni.chat:chat-service-parent"
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": [
