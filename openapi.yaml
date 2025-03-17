@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.1.0
 info:
   title: Example Chat Service
   description: |
@@ -111,17 +111,17 @@ paths:
         description: Zero-based page index (0..N)
         required: false
         schema:
-          minimum: 0
           type: integer
           default: 0
+          minimum: 0
       - name: size
         in: query
         description: The size of the page to be returned
         required: false
         schema:
-          minimum: 1
           type: integer
           default: 20
+          minimum: 1
       - name: sort
         in: query
         description: "Sorting criteria in the format: property,(asc|desc). Default\
@@ -163,18 +163,18 @@ paths:
 components:
   schemas:
     ErrorMessage:
-      title: error message
       type: object
+      description: response body for HTML statuses
       properties:
         timestamp:
           type: string
-          description: time in ISO format
           format: date-time
-          example: 2022-12-21T18:52:10.757Z
+          description: time in ISO format
+          example: 2022-12-21T18:52:10.757+00:00
         status:
           type: integer
-          description: HTTP status code
           format: int32
+          description: HTTP status code
           example: 404
         error:
           type: string
@@ -188,9 +188,8 @@ components:
           type: string
           description: URL path
           example: /api/message/1
-      description: response body for HTML statuses
+      title: error message
     BackgroundColorEnum:
-      title: background color
       type: string
       description: enumeration of allowed background colors
       enum:
@@ -200,10 +199,13 @@ components:
       - lightyellow
       - lightblue
       - "#ffe4c4"
+      title: background color
     NewChatMessageRequest:
-      required:
-      - text
       type: object
+      description: |
+        Object for requesting new message.
+        **Text** of the message must be located in the request body because URLs are limited in size.
+        See [What is the maximum length of a URL in different browsers?](https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
       properties:
         text:
           type: string
@@ -212,24 +214,18 @@ components:
         textColor:
           type: string
           description: HTML color name or RGB hex code
-          example: black
           enum:
           - black
           - blue
           - darkgrey
+          example: black
         backgroundColor:
           $ref: "#/components/schemas/BackgroundColorEnum"
-      description: |
-        Object for requesting new message.
-        **Text** of the message must be located in the request body because URLs are limited in size.
-        See [What is the maximum length of a URL in different browsers?](https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers)
-    ChatMessage:
-      title: chat message
       required:
-      - id
       - text
-      - timestamp
+    ChatMessage:
       type: object
+      description: represents a message in a chat
       properties:
         id:
           type: string
@@ -237,8 +233,8 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174000
         timestamp:
           type: string
-          description: time of creation
           format: date-time
+          description: time of creation
           example: 2022-12-22T12:04:04.493908908+01:00
         text:
           type: string
@@ -254,7 +250,11 @@ components:
           example: black
         backgroundColor:
           $ref: "#/components/schemas/BackgroundColorEnum"
-      description: represents a message in a chat
+      required:
+      - id
+      - text
+      - timestamp
+      title: chat message
     PageMetadata:
       type: object
       properties:
