@@ -211,6 +211,7 @@ components:
           type: string
           description: text of message
           example: Hello! 😀
+          minLength: 1
         textColor:
           type: string
           description: HTML color name or RGB hex code
@@ -231,15 +232,18 @@ components:
           type: string
           description: uuid
           example: 123e4567-e89b-12d3-a456-426614174000
+          minLength: 1
         timestamp:
           type: string
           format: date-time
           description: time of creation
           example: 2022-12-22T12:04:04.493908908+01:00
+          minLength: 1
         text:
           type: string
           description: text of message
           example: Hello! 😀
+          minLength: 1
         author:
           type: string
           description: author of message

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 public class NewChatMessageRequest {
 
     @NotBlank
-    @Schema(description = "text of message", example = "Hello! \uD83D\uDE00")
+    @Schema(description = "text of message", example = "Hello! \uD83D\uDE00", requiredMode = Schema.RequiredMode.REQUIRED)
     private String text;
 
     @Schema(description = "HTML color name or RGB hex code",
