@@ -16,15 +16,16 @@ import java.time.ZonedDateTime;
         description = "represents a message in a chat"
 )
 public record ChatMessage(@NotBlank
-                          @Schema(description = "uuid", example = "123e4567-e89b-12d3-a456-426614174000")
+                          @Schema(description = "uuid", example = "123e4567-e89b-12d3-a456-426614174000", requiredMode = Schema.RequiredMode.REQUIRED)
                           String id,
                           @NotBlank
                           @Schema(type = "string", format = "date-time",
                                   description = "time of creation",
-                                  example = "2022-12-22T12:04:04.493908908+01:00")
+                                  example = "2022-12-22T12:04:04.493908908+01:00",
+                                  requiredMode = Schema.RequiredMode.REQUIRED)
                           ZonedDateTime timestamp,
                           @NotBlank
-                          @Schema(description = "text of message", example = "Hello! \uD83D\uDE00")
+                          @Schema(description = "text of message", example = "Hello! \uD83D\uDE00", requiredMode = Schema.RequiredMode.REQUIRED)
                           String text,
                           @Schema(description = "author of message", example = "John")
                           String author,
