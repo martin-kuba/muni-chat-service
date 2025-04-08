@@ -3,6 +3,8 @@ package cz.muni.chat.server.facade;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
+
 /**
  * Represents JSON-formatted body of HTTP request to createMessage operation.
  */
@@ -16,7 +18,7 @@ import jakarta.validation.constraints.NotBlank;
 public class NewChatMessageRequest {
 
     @NotBlank
-    @Schema(description = "text of message", example = "Hello! \uD83D\uDE00", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "text of message", example = "Hello! \uD83D\uDE00", requiredMode = REQUIRED)
     private String text;
 
     @Schema(description = "HTML color name or RGB hex code",

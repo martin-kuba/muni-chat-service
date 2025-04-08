@@ -130,7 +130,7 @@
 
             <!--
             Mockito instrumentation for JDK 21+
-            https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#mockito-instrumentation
+            https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
             -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
