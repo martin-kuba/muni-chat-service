@@ -6,7 +6,8 @@ from packaging import version
 if version.parse(metadata.version('pydantic')) < version.parse("2.0"):
     print("pydantic 2+ required")
     print("run:")
-    print(" python3 -m venv .; bin/pip3 install pydantic packaging python-dateutil urllib3")
+    print(" python3 -m venv .")
+    print(" bin/pip3 install pydantic packaging python-dateutil urllib3 lazy_imports")
     print(" bin/python3 chat_client.py")
     exit(1)
 
