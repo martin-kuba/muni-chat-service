@@ -39,7 +39,7 @@ cd muni-chat-service
 
 ```bash
 cd chat-server
-mvn spring-boot:run
+../mvnw spring-boot:run
 ```
 Then visit the service with your browser: http://localhost:8080/
 
@@ -47,7 +47,7 @@ Then visit the service with your browser: http://localhost:8080/
 ## Run client
 ```bash
 cd chat-client-java
-mvn spring-boot:run
+../mvnw spring-boot:run
 ```
 
 ## Advanced usage
