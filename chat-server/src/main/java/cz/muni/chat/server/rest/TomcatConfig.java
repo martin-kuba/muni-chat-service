@@ -4,7 +4,7 @@ import org.apache.coyote.ajp.AjpNioProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.tomcat.servlet.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,7 +53,7 @@ public class TomcatConfig {
         if (enableAjp) {
             tomcat.setProtocol("AJP/1.3");
             tomcat.setPort(port);
-            tomcat.getTomcatProtocolHandlerCustomizers().add(protocolHandler -> {
+            tomcat.getProtocolHandlerCustomizers().add(protocolHandler -> {
                 log.info("TomcatProtocolHandlerCustomizer protocolHandler={}", protocolHandler);
                 if (protocolHandler instanceof AjpNioProtocol ajp) {
                     ajp.setSecretRequired(secretRequired);

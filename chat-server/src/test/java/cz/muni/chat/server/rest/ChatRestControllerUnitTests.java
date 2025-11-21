@@ -1,6 +1,5 @@
 package cz.muni.chat.server.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.chat.server.facade.BackgroundColor;
 import cz.muni.chat.server.facade.NewChatMessageRequest;
 import cz.muni.chat.server.service.ChatService;
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +21,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

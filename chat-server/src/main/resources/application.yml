@@ -18,8 +18,10 @@ springdoc:
   # https://springdoc.org/properties.html#_springdoc_openapi_core_properties
   api-docs:
     path: /openapi
-#    version: openapi_3_0
+    enabled: true
+  #    version: openapi_3_0
   # https://springdoc.org/properties.html#_swagger_ui_properties
   swagger-ui:
     path: /swagger-ui.html
     tryItOutEnabled: true
+    enabled: true

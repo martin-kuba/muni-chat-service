@@ -32,7 +32,7 @@ Download and compile:
 ```bash
 git clone https://github.com/martin-kuba/muni-chat-service.git
 cd muni-chat-service
-mvn install
+./mvnw install
 ```
 
 ## Run server
