@@ -48,6 +48,7 @@
                                 <library>native</library>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <useJakartaEe>true</useJakartaEe>
+                                <openApiNullable>false</openApiNullable>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -57,6 +58,7 @@
     </build>
 
     <dependencies>
+        <!-- As of version 7.20.0, java generator uses Jackson 2 only -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>

@@ -37,8 +37,10 @@
                             <configOptions>
                                 <basePackage>cz.muni.chat.generated.server</basePackage>
                                 <configPackage>cz.muni.chat.generated.server.config</configPackage>
-                                <useSpringBoot3>true</useSpringBoot3>
-                                <useJakartaEe>true</useJakartaEe>
+                                <!-- https://github.com/OpenAPITools/openapi-generator/pull/22854 -->
+                                <useSpringBoot4>true</useSpringBoot4>
+                                <useJackson3>true</useJackson3>
+                                <openApiNullable>false</openApiNullable>
                                 <useTags>true</useTags>
                                 <delegatePattern>true</delegatePattern>
                             </configOptions>
@@ -105,10 +107,13 @@
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations-jakarta</artifactId>
         </dependency>
+        <!-- As of version 7.20.0, spring generator supports Spring Boot 4 and Jackson 3,
+             but jackson nullable plugin is not ported to Jackson 3 yet
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
