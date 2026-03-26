@@ -1,9 +1,10 @@
 package cz.muni.chat.client;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.chat.client.invoker.ApiException;
 import cz.muni.chat.client.model.ErrorMessage;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -25,10 +26,10 @@ public class ChatException extends RuntimeException {
 
     private String path;
 
-    private static final ObjectMapper objectMapper =
-            new ObjectMapper()
-                    .findAndRegisterModules()
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final ObjectMapper objectMapper = JsonMapper.builder()
+            .findAndAddModules()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .build();
 
     public static ChatException from(ApiException ex) {
         try {
@@ -39,7 +40,7 @@ public class ChatException extends RuntimeException {
             che.httpStatusName = em.getError();
             che.path = em.getPath();
             return che;
-        } catch (IOException ioe) {
+        } catch (Exception ioe) {
             return new ChatException("cannot parse remote Exception", ex);
         }
     }

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.4</version>
+        <version>4.0.5</version>
     </parent>
 
     <!-- this project -->
@@ -43,7 +43,7 @@
     <!-- properties are inherited into children projects and can be used anywhere with ${property} -->
     <properties>
         <java.version>21</java.version>
-        <swagger-jakarta-version>2.2.43</swagger-jakarta-version>
+        <swagger-jakarta-version>2.2.45</swagger-jakarta-version>
     </properties>
 
     <build>
@@ -101,18 +101,18 @@
                 <version>0.2.10</version>
             </dependency>
             <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>2.0.1.Final</version>
-            </dependency>
-            <dependency>
                 <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-models-jakarta</artifactId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
                 <version>${swagger-jakarta-version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-annotations-jakarta</artifactId>
+                <artifactId>swagger-core-jakarta</artifactId>
+                <version>${swagger-jakarta-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-models-jakarta</artifactId>
                 <version>${swagger-jakarta-version}</version>
             </dependency>
         </dependencies>
