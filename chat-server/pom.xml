@@ -47,14 +47,9 @@
 
         <!--
           testing
-          see https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing
-          and https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html
+          see https://docs.spring.io/spring-boot/reference/testing/index.html#testing
+          and https://docs.spring.io/spring-framework/reference/testing.html
         -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc-test</artifactId>
