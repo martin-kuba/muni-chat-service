@@ -62,7 +62,7 @@ public class TomcatConfig {
                     try {
                         ajp.setAddress(InetAddress.getByName(address));
                     } catch (UnknownHostException e) {
-                        log.error("Cannot resolve IP address " + address, e);
+                        log.atError().setCause(e).log("Cannot resolve IP address {}", address);
                     }
                     ajp.setPacketSize(packetSize);
                     if(allowedRequestAttributesPattern!=null && !allowedRequestAttributesPattern.isEmpty()) {

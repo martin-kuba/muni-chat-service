@@ -64,22 +64,4 @@ public class ApiConfig {
             }
         };
     }
-
-    /**
-     * Workaround for a bug in SpringDoc that sets wrong default for /api/paged?sort.
-     */
-    @Bean
-    public OperationCustomizer removeSpuriousDefaults() {
-        return (operation, handlerMethod) -> {
-            if (operation.getParameters() == null) return operation;
-            operation.getParameters().forEach(param -> {
-                Schema<?> schema = param.getSchema();
-                if (schema != null && "##default".equals(schema.getDefault())) {
-                    schema.setDefault(null);
-                    schema.setDefaultSetFlag(false);
-                }
-            });
-            return operation;
-        };
-    }
 }

@@ -47,10 +47,8 @@
                                 <!-- see https://openapi-generator.tech/docs/generators/java/ -->
                                 <library>native</library>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                                <useJakartaEe>true</useJakartaEe>
                                 <useSpringBoot4>true</useSpringBoot4>
                                 <useJackson3>true</useJackson3>
-                                <openApiNullable>false</openApiNullable>
                             </configOptions>
                         </configuration>
                     </execution>

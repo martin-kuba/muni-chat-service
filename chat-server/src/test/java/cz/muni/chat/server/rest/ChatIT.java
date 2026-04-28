@@ -118,7 +118,7 @@ public class ChatIT {
      * It works only when executed by "mvn verify", not in development environment.
      */
     @Test
-    void testRealHTTP() throws Exception {
+    void testRealHTTP() {
         log.debug("Integration Test - testRealHTTP");
         RestTemplate restTemplate = new RestTemplate();
         // get list of messages converted into List of CHatMessage
@@ -126,14 +126,14 @@ public class ChatIT {
                 HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<>() {
         });
         for (ChatMessage chatMessage : Objects.requireNonNull(entity.getBody())) {
-            log.debug("message: "+chatMessage);
+            log.debug("message: {}", chatMessage);
         }
         // get list of messages as JSON nodes
         JsonNode root = restTemplate.getForObject("http://localhost:8080/api/messages", JsonNode.class);
         // the JSON root is a list, iterate over it
         for (JsonNode message : Objects.requireNonNull(root)) {
-            String id = message.get("id").asText();
-            String text = message.get("text").asText();
+            String id = message.get("id").asString();
+            String text = message.get("text").asString();
             log.debug("message id={} text={}", id, text);
         }
     }
