@@ -41,6 +41,8 @@
                                 <useJackson3>true</useJackson3>
                                 <useTags>true</useTags>
                                 <delegatePattern>true</delegatePattern>
+                                <generateJsonIncludeAnnotations>false</generateJsonIncludeAnnotations>
+                                <generateJsonSetterNullsAnnotations>false</generateJsonSetterNullsAnnotations>
                             </configOptions>
                         </configuration>
                     </execution>
